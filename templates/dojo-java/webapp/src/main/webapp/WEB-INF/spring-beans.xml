@@ -14,8 +14,6 @@
     <context:annotation-config/>
     <context:component-scan base-package="org.sgodden.example"/>
 
-    <!-- do not use import statements if CXFServlet init parameters link to this beans.xml -->
-
     <import resource="classpath:META-INF/cxf/cxf.xml"/>
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
