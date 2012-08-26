@@ -2,12 +2,10 @@ package org.sgodden.tom.model
 
 trait CustomerOrderState {
 
-  def willEnter(order: CustomerOrder): Boolean
+  def cancel(order: CustomerOrder)
 
-  def willLeave(order: CustomerOrder): Boolean
-  
-  def getAvailableTransitions(order: CustomerOrder): Array[String]
+  def confirm(order: CustomerOrder)
 
-  def transition(transitionName: String)
+  def ship(order: CustomerOrder)
 
 }
