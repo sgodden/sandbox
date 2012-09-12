@@ -1,6 +1,10 @@
 var mongodb = require('mongodb'),
     server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
-    conn = new mongodb.Db('orderManagement-dev', server);
+    DB_NAME = 'orderManagement-dev'
+    conn = new mongodb.Db(DB_NAME, server),
+    COLL_NAME = 'customerOrders',
+    repo = require('../repo/repo'),
+    CustomerOrderRepository = repo.CustomerOrderRepository;
 
 
 /*
@@ -16,7 +20,7 @@ exports.list = function(req, res){
           console.log(colls);
       });
 */
-      db.collection('customerOrders').find().each(function(err, item){
+      db.collection(COLL_NAME).find().each(function(err, item){
           if (item) {
               console.log(item);
               docs.push(item);
@@ -29,6 +33,7 @@ exports.list = function(req, res){
                */
               res.send(docs);
               conn.close();
+              new CustomerOrderRepository().sayHello();
           }
       });
   });
