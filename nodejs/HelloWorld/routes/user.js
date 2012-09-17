@@ -33,7 +33,7 @@ exports.list = function(req, res){
                */
               res.send(docs);
               conn.close();
-              new CustomerOrderRepository().sayHello();
+              console.debug(new CustomerOrderRepository().sayHello());
           }
       });
   });

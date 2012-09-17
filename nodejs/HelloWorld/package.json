@@ -10,6 +10,7 @@
     "jade": "*",
     "mongodb": "*" ,
     "declare": "*",
+    "dojo-node": "*",
     "eventemitter2": "*"
   }
 }
