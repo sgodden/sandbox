@@ -13,10 +13,6 @@ var oop = require('declare')({"repo": "repo"}),
 
 
 exports.CustomerOrderRepository = oop.declare('repo.CustomerOrder', [], {
-    sayHello: function() {
-        console.log('Hello!');
-        return new Deferred();
-    },
 
     findAll: function() {
         var d = new Deferred();
@@ -33,11 +29,10 @@ exports.CustomerOrderRepository = oop.declare('repo.CustomerOrder', [], {
                 else {
                     // we get a null item when there are no more
                     /*
-                     * I think res.send is a once-only operation which commits the response,
+                     * res.send is a once-only operation which commits the response,
                      * so the pattern is to build up the response and res.send it only when finished.
                      */
                     conn.close();
-                    console.log('Resolving the deferred');
                     d.resolve(docs);
                 }
             });

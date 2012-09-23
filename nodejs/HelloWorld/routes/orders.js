@@ -14,7 +14,8 @@ var mongodb = require('mongodb'),
 exports.list = function(req, res){
 
     new CustomerOrderRepository().findAll().then(function(docs){
-        res.send(docs);
+//        res.send(docs);
+        res.render('orders', {title: 'Orders', orders: docs});
     });
 
 };
