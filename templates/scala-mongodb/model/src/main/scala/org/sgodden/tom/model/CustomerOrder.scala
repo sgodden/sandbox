@@ -4,7 +4,7 @@ import javax.validation.constraints.{Pattern,NotNull}
 import collection.mutable.{HashSet, Set => MutableSet}
 import org.springframework.beans.factory.annotation.{Configurable, Autowired}
 import java.util.{Date, Map => JavaMap}
-import org.joda.time.{DateTime}
+import org.joda.time.DateTime
 import collection.JavaConverters
 import JavaConverters._
 import javax.validation.{ConstraintViolation, Validation}
@@ -38,28 +38,28 @@ class CustomerOrder() extends ICustomerOrder {
     this._id = id
   }
 
-  override def cancel = {
+  override def cancel {
     getStateObject.cancel(this)
   }
 
-  override def confirm = {
+  override def confirm {
     getStateObject.confirm(this)
   }
 
-  override def ship = {
+  override def ship {
     getStateObject.ship(this)
   }
 
-  def approveRemove(onApprove: () => Unit) = {
+  def approveRemove(onApprove: () => Unit) {
     onApprove()
   }
 
-  def approvePersist(onApprove: () => Unit) = {
-    validate
+  def approvePersist(onApprove: () => Unit) {
+    validate()
     onApprove()
   }
 
-  def validate = {
+  def validate() {
     val constraints = CustomerOrder.validator.validate(this).asScala.toSet
     if (constraints.size > 0) {
       if (CustomerOrder.LOG.isDebugEnabled) {
@@ -73,35 +73,49 @@ class CustomerOrder() extends ICustomerOrder {
   }
 
   override def getBookingDate = bookingDate
-  override def setBookingDate(date: DateTime) = this.bookingDate = date
+  override def setBookingDate(date: DateTime) {
+    this.bookingDate = date
+  }
 
   override def getCustomerReference = customerReference
-  override def setCustomerReference(customerReference: String) = this.customerReference = customerReference
+  override def setCustomerReference(customerReference: String) {
+    this.customerReference = customerReference
+  }
 
   override def getOrderNumber: String = orderNumber
-  override def setOrderNumber(orderNumber: String) = this.orderNumber = orderNumber
+  override def setOrderNumber(orderNumber: String) {
+    this.orderNumber = orderNumber
+  }
 
   override def getCollectionDetails: ICollectionDetails = collectionDetails
-  override def setCollectionDetails(collectionDetails: ICollectionDetails) =
+  override def setCollectionDetails(collectionDetails: ICollectionDetails) {
     this.collectionDetails = collectionDetails.asInstanceOf[CollectionDetails]
+  }
 
   override def getDeliveryDetails: IDeliveryDetails = deliveryDetails
-  override def setDeliveryDetails(deliveryDetails: IDeliveryDetails) =
+  override def setDeliveryDetails(deliveryDetails: IDeliveryDetails) {
     this.deliveryDetails = deliveryDetails.asInstanceOf[DeliveryDetails]
+  }
 
   override def getOrderLines: Set[ICustomerOrderLine] = orderLines.map(_.asInstanceOf[ICustomerOrderLine]).toSet
-  override def addOrderLine(line: ICustomerOrderLine) =
+  override def addOrderLine(line: ICustomerOrderLine) {
     orderLines.add(line.asInstanceOf[CustomerOrderLine])
-  override def removeOrderLine(line: ICustomerOrderLine) =
+  }
+  override def removeOrderLine(line: ICustomerOrderLine) {
     orderLines.remove(line.asInstanceOf[CustomerOrderLine])
+  }
 
   override def getStatus: CustomerOrderStatus.Value = status
-  def setStatus(status: CustomerOrderStatus.Value) = this.status = status
+  def setStatus(status: CustomerOrderStatus.Value) {
+    this.status = status
+  }
 
   private def getStateObject: CustomerOrderState = stateObjects.get(getStatus.toString)
 
   def getStateObjects: JavaMap[String, CustomerOrderState] = stateObjects
-  def setStateObjects(stateObjects: JavaMap[String, CustomerOrderState]) = this.stateObjects = stateObjects
+  def setStateObjects(stateObjects: JavaMap[String, CustomerOrderState]) {
+    this.stateObjects = stateObjects
+  }
 }
 
 object CustomerOrder {

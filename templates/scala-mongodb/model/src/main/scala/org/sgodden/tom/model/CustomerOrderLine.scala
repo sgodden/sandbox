@@ -5,8 +5,14 @@ class CustomerOrderLine {
   private var descriptionOfGoods: String = null
 
   def getPackageType = packageType
-  def setPackageType(packageType: String) { this.packageType = packageType }
+
+  def setPackageType(packageType: String) {
+    this.packageType = packageType
+  }
 
   def getDescriptionOfGoods = descriptionOfGoods
-  def setDescriptionOfGoods(descriptionOfGoods: String) = this.descriptionOfGoods = descriptionOfGoods
+
+  def setDescriptionOfGoods(descriptionOfGoods: String) {
+    this.descriptionOfGoods = descriptionOfGoods
+  }
 }

@@ -6,6 +6,8 @@ class DeliveryDetails extends IDeliveryDetails {
 
   def getAddress = address
 
-  def setAddress(address: IAddress) = this.address = address.asInstanceOf[Address]
+  def setAddress(address: IAddress) {
+    this.address = address.asInstanceOf[Address]
+  }
 
 }

@@ -9,13 +9,21 @@ class CustomerOrderRequestedState extends AbstractCustomerOrderState {
   @Autowired
   private var confirmCommand: CustomerOrderConfirmCommand = null
 
-  def confirm(order: CustomerOrder) = confirmCommand execute order
+  def confirm(order: CustomerOrder) {
+    confirmCommand execute order
+  }
 
-  def ship(order: CustomerOrder) = throw new IllegalStateException("An order may not be shipped from the requested state")
+  def ship(order: CustomerOrder) {
+    throw new IllegalStateException("An order may not be shipped from the requested state")
+  }
 
-  def cancel(order: CustomerOrder) = order setStatus CustomerOrderStatus.CANCELLED
+  def cancel(order: CustomerOrder) {
+    order setStatus CustomerOrderStatus.CANCELLED
+  }
 
-  override def save(order: CustomerOrder) = order setStatus CustomerOrderStatus.REQUESTED
+  override def save(order: CustomerOrder) {
+    order setStatus CustomerOrderStatus.REQUESTED
+  }
 
   def willEnter(order: CustomerOrder) = true
 
