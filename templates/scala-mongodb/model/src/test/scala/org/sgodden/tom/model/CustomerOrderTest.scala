@@ -2,24 +2,23 @@ package org.sgodden.tom.model
 
 import org.testng.annotations.Test
 import org.testng.Assert._
-import java.util.Calendar
 import javax.validation.{ConstraintViolation, Validation}
-import org.joda.time.{DateTime, LocalDate}
+import org.joda.time.DateTime
 
 @Test
 class CustomerOrderTest {
 
   private val validator = Validation.buildDefaultValidatorFactory.getValidator
 
-  def testValidation {
+  def testValidation() {
     assertEquals(validator.validate(new CustomerOrder).size, 2, "Wrong number of violations")
   }
 
-  def customerReferenceMustNotBeNull {
+  def customerReferenceMustNotBeNull() {
     assertTrue(containsViolation(getViolations(new CustomerOrder), "customerReference", "may not be null"))
   }
 
-  def customerReferenceMustBeginWithCr {
+  def customerReferenceMustBeginWithCr() {
     val order = new CustomerOrder {
       setOrderNumber("ordnum")
       setCustomerReference("foo")
