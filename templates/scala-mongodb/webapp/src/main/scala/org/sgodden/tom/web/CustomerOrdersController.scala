@@ -58,7 +58,7 @@ class CustomerOrdersController {
   def saveOrUpdate(entryString: String): Response = {
     val entry: ListEntry = mapper.readValue(entryString, classOf[ListEntry])
     var responseOrder: ListEntry = null
-    var success: Boolean = true;
+    var success: Boolean = true
     var errors: Set[Error] = null
     var responseEntity: String = null
 
@@ -117,7 +117,7 @@ case class ListEntry(
                     customerReference: String,
                     orderNumber: String,
                     bookingDate: DateTime) {
-  def merge(order: ICustomerOrder) = {
+  def merge(order: ICustomerOrder) {
     order.setOrderNumber(orderNumber)
     order.setCustomerReference(customerReference)
     order.setBookingDate(bookingDate)
