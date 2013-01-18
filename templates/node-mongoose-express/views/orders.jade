@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  table
+    thead
+      th Order Number
+      th Customer Reference
+    each order in orders
+      tr
+        td= order.orderNumber
+        td= order.customerReference
