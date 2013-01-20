@@ -1,9 +1,16 @@
-var oop = require('declare')({"repo": "repo"});
+var mongoose = require('mongoose'),
+    customerOrderSchema,
+    CustomerOrder;
 
-exports.CustomerOrder = oop.declare('model.CustomerOrder', [], {
-    orderNumber: null,
-
-    logOrderNumber: function() {
-        console.log(this.orderNumber);
-    }
+customerOrderSchema = mongoose.Schema({
+    orderNumber: String,
+    customerReference: String
 });
+
+customerOrderSchema.methods.logOrderNumber = function() {
+    console.log('Order number: ' + this.orderNumber);
+}
+
+CustomerOrder = mongoose.model('CustomerOrder', customerOrderSchema);
+exports.CustomerOrder = CustomerOrder;
+

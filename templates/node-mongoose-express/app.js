@@ -1,14 +1,31 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express'),
     routes = require('./routes'),
     orders = require('./routes/orders'),
     http = require('http'),
-    path = require('path');
+    path = require('path'),
+    mongoose = require('mongoose'),
+    CustomerOrder = require('./model/CustomerOrder').CustomerOrder,
+    db;
 
+// set up mongoose / mongo
+
+mongoose.connect('mongodb://localhost/test');
+db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error'));
+db.once('open', function(){
+    CustomerOrder.count(function(err, count){
+        if (count === 0) {
+            console.log('Creating an order for you');
+            new CustomerOrder({
+                orderNumber: 'asdasd',
+                customerReference: 'werwer'
+            }).save();
+        }
+    })
+});;
+
+
+// and now set up the web server
 var app = express();
 
 app.configure(function(){

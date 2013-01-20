@@ -1,21 +1,8 @@
-var oop = require('declare')({"repo": "repo"}),
-    mongodb = require('mongodb'),
-    server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
-    DB_NAME = 'orderManagement-dev'
-    conn = new mongodb.Db(DB_NAME, server),
-    COLL_NAME = 'customerOrders',
+var CustomerOrder = require('../model/CustomerOrder').CustomerOrder;
 
-    dojoRequire = require('dojo-node'),
-    Deferred = dojoRequire('dojo/_base/Deferred'),
-    lang = dojoRequire('dojo/_base/lang'),
-    CustomerOrder = require('../model/CustomerOrder').CustomerOrder
-    ;
+exports.CustomerOrderRepository = {
 
-
-exports.CustomerOrderRepository = oop.declare('repo.CustomerOrder', [], {
-
-    findAll: function() {
-        var d = new Deferred();
+    findAll: function(callback) {
 
         conn.open(function(err, db) {
             var docs = [], customerOrder;
@@ -41,4 +28,4 @@ exports.CustomerOrderRepository = oop.declare('repo.CustomerOrder', [], {
         return d;
     }
 
-});
+};

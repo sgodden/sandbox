@@ -8,9 +8,10 @@
   "dependencies": {
     "express": "3.0.0rc4",
     "jade": "*",
+    "mongoose": "*",
     "mongodb": "*" ,
-    "declare": "*",
     "dojo-node": "*",
+    "declare": "*",
     "eventemitter2": "*"
   }
 }
