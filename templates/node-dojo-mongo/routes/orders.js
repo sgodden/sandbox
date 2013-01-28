@@ -13,9 +13,15 @@ exports.list = function(req, res){
 
     doList = function() {
         repo.findAll().then(function(docs){
-            res.render('orders', {title: 'Orders', orders: docs});
+            res.render(
+                'orders',
+                {
+                    title: 'Orders',
+                    orders: docs
+                }
+            );
         });
-    }
+    };
 
     repo.count().then(function(count){
         if (count === 0) {
