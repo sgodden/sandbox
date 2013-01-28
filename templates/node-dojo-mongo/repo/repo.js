@@ -12,7 +12,7 @@ var oop = require('declare')({"repo": "repo"}),
     CustomerOrder = require('../model/CustomerOrder').CustomerOrder,
     CustomerOrderRepository = null;
 
-CustomerOrderRepository = oop.declare('repo.CustomerOrder', [], {
+CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
 
     findAll: function() {
         var d = new Deferred();
