@@ -4,7 +4,7 @@ somePrivateFunction = function(orderNumber) {
     console.log("I am private: " + orderNumber);
 };
 
-var CustomerOrder = function(){
+CustomerOrder = function(){
     this.orderNumber = null;
 };
 
