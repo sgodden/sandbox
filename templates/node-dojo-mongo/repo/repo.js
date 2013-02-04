@@ -1,7 +1,7 @@
 var oop = require('declare')({"repo": "repo"}),
     mongodb = require('mongodb'),
     server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
-    DB_NAME = 'orderManagement-dev'
+    DB_NAME = 'orderManagement-dev',
     conn = new mongodb.Db(DB_NAME, server, {safe: true}),
     COLL_NAME = 'customerOrders',
 
@@ -10,7 +10,7 @@ var oop = require('declare')({"repo": "repo"}),
 
     lang = dojoRequire('dojo/_base/lang'),
     CustomerOrder = require('../model/CustomerOrder').CustomerOrder,
-    CustomerOrderRepository = null;
+    CustomerOrderRepository;
 
 CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
 
@@ -20,7 +20,7 @@ CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
         var docs = [], customerOrder;
 
         conn.open(function(err, db){
-            db.collection('customerOrders', function(err, coll){
+            db.collection(COLL_NAME, function(err, coll){
                 coll.find().each(function(err, item){
                     if (item) {
                         customerOrder = new CustomerOrder();
@@ -48,7 +48,7 @@ CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
         var d = new Deferred();
 
         conn.open(function(err, db){
-            db.collection('customerOrders', function(err, coll){
+            db.collection(COLL_NAME, function(err, coll){
                 coll.count(function(err, count){
                     if (err) {
                         console.log('An error occurred on count');
@@ -68,8 +68,8 @@ CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
     insert: function(order) {
         var d = new Deferred();
         conn.open(function(err, db){
-            db.collection('customerOrders', function(err, coll){
-                db.collection('customerOrders').insert(order, {safe: true}, function(err, doc){
+            db.collection(COLL_NAME, function(err, coll){
+                coll.insert(order, {safe: true}, function(err, doc){
                     if (err) {
                         throw new Error(err);
                     }
