@@ -69,7 +69,7 @@ CustomerOrderRepository = oop.declare('repo.CustomerOrderRepository', [], {
         var d = new Deferred();
         conn.open(function(err, db){
             db.collection('customerOrders', function(err, coll){
-                db.insert(order, {safe: true}, function(err, doc){
+                db.collection('customerOrders').insert(order, {safe: true}, function(err, doc){
                     if (err) {
                         throw new Error(err);
                     }

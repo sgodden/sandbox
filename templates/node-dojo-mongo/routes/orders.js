@@ -29,8 +29,7 @@ exports.list = function(req, res){
             repo.insert({
                 orderNumber: "O000001",
                 customerReference: "CR00001"
-            })
-                .then(doList);
+            }).then(doList);
         }
         else {
             doList();
