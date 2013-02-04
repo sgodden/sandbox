@@ -12,7 +12,21 @@ somePrivateFunction = function(orderNumber) {
  * @constructor
  */
 CustomerOrder = function(){
-    this.orderNumber = null;
+    /*
+     * Private properties.
+     */
+    var orderNumber = null;
+
+    Object.defineProperty(this, 'orderNumber', {
+        get: function() {
+            console.log('Returning order number');
+            return orderNumber;
+        },
+        set: function(_orderNumber) {
+            console.log('Setting order number');
+            orderNumber = _orderNumber;
+        }
+    });
 };
 
 /**

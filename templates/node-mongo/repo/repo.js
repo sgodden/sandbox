@@ -33,7 +33,7 @@ CustomerOrderRepository.findAll = function () {
             coll.find().each(function (err, item) {
                 if (item) {
                     customerOrder = new CustomerOrder();
-                    lang.mixin(customerOrder, item); // TODO - encapsulate the mixing in
+                    customerOrder.orderNumber = item.orderNumber;
                     docs.push(customerOrder);
                     customerOrder.logOrderNumber();
                 }
