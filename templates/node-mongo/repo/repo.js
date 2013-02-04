@@ -12,9 +12,17 @@ var
     CustomerOrder = require('../model/CustomerOrder').CustomerOrder,
     CustomerOrderRepository;
 
+/**
+ * @module A repository module for Customer Orders.
+ * @type {{CustomerOrderRepository}}
+ */
 CustomerOrderRepository = {
 };
 
+/**
+ * @method
+ * @return {Deferred}
+ */
 CustomerOrderRepository.findAll = function () {
     var d = new Deferred();
 
