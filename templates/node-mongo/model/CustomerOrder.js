@@ -11,7 +11,7 @@ somePrivateFunction = function(orderNumber) {
  * @class CustomerOrder.
  * @constructor
  */
-CustomerOrder = function(){
+CustomerOrder = function() {
     /*
      * Private properties.
      */
@@ -27,6 +27,10 @@ CustomerOrder = function(){
             orderNumber = _orderNumber;
         }
     });
+
+    // Oh yeahhhh!!!!  Javascript is really rocking these days.
+    // Now nobody can bugger about with us, defining new properties etc.
+    Object.seal(this);
 };
 
 /**
