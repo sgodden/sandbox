@@ -19,16 +19,28 @@ var
 CustomerOrderRepository = {
 };
 
+CustomerOrderRepository.execDb = function(callback) {
+    var d = new Deferred();
+
+    conn.open(function(err, db) {
+        var d2 = new Deferred();
+        callback(db, d2);
+        d2.then(function(results){
+            conn.close();
+            d.resolve(results);
+        });
+    });
+
+    return d;
+}
+
 /**
  * @method
  * @return {Deferred}
  */
 CustomerOrderRepository.findAll = function () {
-    var d = new Deferred();
-
-    var docs = [], customerOrder;
-
-    conn.open(function (err, db) {
+    return CustomerOrderRepository.execDb(function(db, d){
+        var docs = [], customerOrder;
         db.collection(COLL_NAME, function (err, coll) {
             coll.find().each(function (err, item) {
                 if (item) {
@@ -39,18 +51,11 @@ CustomerOrderRepository.findAll = function () {
                 }
                 else {
                     // we get a null item when there are no more
-                    /*
-                     * res.send is a once-only operation which commits the response,
-                     * so the pattern is to build up the response and res.send it only when finished.
-                     */
-                    conn.close();
                     d.resolve(docs);
                 }
             });
         });
     });
-
-    return d;
 };
 
 CustomerOrderRepository.count = function () {
