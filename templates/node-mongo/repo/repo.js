@@ -39,7 +39,7 @@ CustomerOrderRepository.execDb = function(callback) {
  * @return {Deferred}
  */
 CustomerOrderRepository.findAll = function () {
-    return CustomerOrderRepository.execDb(function(db, d){
+    return this.execDb(function(db, d){
         var docs = [], customerOrder;
         db.collection(COLL_NAME, function (err, coll) {
             coll.find().each(function (err, item) {
@@ -59,7 +59,7 @@ CustomerOrderRepository.findAll = function () {
 };
 
 CustomerOrderRepository.count = function () {
-    return CustomerOrderRepository.execDb(function(db, d){
+    return this.execDb(function(db, d){
         db.collection(COLL_NAME, function (err, coll) {
             coll.count(function (err, count) {
                 if (err) {
@@ -75,7 +75,7 @@ CustomerOrderRepository.count = function () {
 };
 
 CustomerOrderRepository.insert = function (order) {
-    return CustomerOrderRepository.execDb(function(db, d){
+    return this.execDb(function(db, d){
         db.collection(COLL_NAME, function (err, coll) {
             coll.insert(order, {safe: true}, function (err, doc) {
                 if (err) {
