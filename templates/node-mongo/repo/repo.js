@@ -19,27 +19,27 @@ var
 CustomerOrderRepository = {
 };
 
-CustomerOrderRepository.execDb = function(callback) {
+CustomerOrderRepository.execDb = function (callback) {
     var d = new Deferred();
 
-    conn.open(function(err, db) {
+    conn.open(function (err, db) {
         var d2 = new Deferred();
         callback(db, d2);
-        d2.then(function(results){
+        d2.then(function (results) {
             conn.close();
             d.resolve(results);
         });
     });
 
     return d;
-}
+};
 
 /**
  * @method
  * @return {Deferred}
  */
 CustomerOrderRepository.findAll = function () {
-    return this.execDb(function(db, d){
+    return this.execDb(function (db, d) {
         var docs = [], customerOrder;
         db.collection(COLL_NAME, function (err, coll) {
             coll.find().each(function (err, item) {
@@ -59,7 +59,7 @@ CustomerOrderRepository.findAll = function () {
 };
 
 CustomerOrderRepository.count = function () {
-    return this.execDb(function(db, d){
+    return this.execDb(function (db, d) {
         db.collection(COLL_NAME, function (err, coll) {
             coll.count(function (err, count) {
                 if (err) {
@@ -75,7 +75,7 @@ CustomerOrderRepository.count = function () {
 };
 
 CustomerOrderRepository.insert = function (order) {
-    return this.execDb(function(db, d){
+    return this.execDb(function (db, d) {
         db.collection(COLL_NAME, function (err, coll) {
             coll.insert(order, {safe: true}, function (err, doc) {
                 if (err) {
