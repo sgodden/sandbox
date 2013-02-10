@@ -59,9 +59,7 @@ CustomerOrderRepository.findAll = function () {
 };
 
 CustomerOrderRepository.count = function () {
-    var d = new Deferred();
-
-    conn.open(function (err, db) {
+    return CustomerOrderRepository.execDb(function(db, d){
         db.collection(COLL_NAME, function (err, coll) {
             coll.count(function (err, count) {
                 if (err) {
@@ -70,31 +68,25 @@ CustomerOrderRepository.count = function () {
                     throw new Error(JSON.stringify(err));
                 }
                 console.log('count ' + count);
-                conn.close();
                 d.resolve(count);
             });
         });
     });
-
-    return d;
 };
 
 CustomerOrderRepository.insert = function (order) {
-    var d = new Deferred();
-    conn.open(function (err, db) {
+    return CustomerOrderRepository.execDb(function(db, d){
         db.collection(COLL_NAME, function (err, coll) {
             coll.insert(order, {safe: true}, function (err, doc) {
                 if (err) {
                     throw new Error(err);
                 }
                 else {
-                    conn.close();
                     d.resolve(doc);
                 }
             });
         });
     });
-    return d;
 };
 
 exports.CustomerOrderRepository = CustomerOrderRepository;
