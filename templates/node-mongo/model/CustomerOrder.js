@@ -18,6 +18,7 @@ CustomerOrder = function() {
      * Private properties.
      */
     var orderNumber = null;
+    var customerReference = null;
 
     Object.defineProperty(this, 'orderNumber', {
         get: function() {
@@ -30,8 +31,18 @@ CustomerOrder = function() {
         }
     });
 
+    Object.defineProperty(this, 'customerReference', {
+        get: function() {
+            return customerReference;
+        },
+        set: function(value) {
+            customerReference = value;
+        }
+    });
+
     // Oh yeahhhh!!!!  Javascript is really rocking these days.
     // Now nobody can bugger about with us, defining new properties etc.
+    // TODO - this does not seem to have the effect I thought it would
     Object.seal(this);
 };
 

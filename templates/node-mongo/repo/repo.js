@@ -19,19 +19,25 @@ var
 CustomerOrderRepository = {
 };
 
+/**
+ * Returns a deferred, executes the passed callback within an open connection, and resolves the returned deferred
+ * with the results of the callback after having closed the connection.
+ * @param callback the callback to execute with the open connection.
+ * @return {Deferred} the deferred which will be resolved with the results of the callback.
+ */
 CustomerOrderRepository.execDb = function (callback) {
-    var d = new Deferred();
+    var ret = new Deferred();
 
     conn.open(function (err, db) {
-        var d2 = new Deferred();
-        callback(db, d2);
-        d2.then(function (results) {
+        var d = new Deferred();
+        callback(db, d);
+        d.then(function (results) {
             conn.close();
-            d.resolve(results);
+            ret.resolve(results);
         });
     });
 
-    return d;
+    return ret;
 };
 
 /**
@@ -46,6 +52,7 @@ CustomerOrderRepository.findAll = function () {
                 if (item) {
                     customerOrder = new CustomerOrder();
                     customerOrder.orderNumber = item.orderNumber;
+                    customerOrder.customerReference = item.customerReference;
                     docs.push(customerOrder);
                     customerOrder.logOrderNumber();
                 }
