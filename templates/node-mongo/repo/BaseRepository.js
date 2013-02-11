@@ -27,6 +27,9 @@ BaseRepository.prototype.execDb = function (callback) {
     var ret = new Deferred();
 
     conn.open(function (err, db) {
+        if (err) {
+            console.log(err);
+        }
         var d = new Deferred();
         callback(db, d);
         d.then(function (results) {

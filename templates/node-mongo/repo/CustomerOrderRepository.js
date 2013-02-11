@@ -14,6 +14,16 @@ CustomerOrderRepository.prototype = new BaseRepository();
 CustomerOrderRepository.prototype.COLL_NAME = "customerOrders";
 CustomerOrderRepository.prototype.entityClass = CustomerOrder;
 
+/**
+ * An example of overriding a method.
+ * @return {number}
+ */
+CustomerOrderRepository.prototype.count = function() {
+    console.log("Count in CustomerOrderRepository");
+    return BaseRepository.prototype.count.apply(this);
+};
+
+
 exports.CustomerOrderRepository = CustomerOrderRepository;
 
 
