@@ -1,13 +1,11 @@
 var somePrivateFunction, CustomerOrder;
 
 /*
- * Private function declarations.
+ * Functions that are private to the module.
  */
 somePrivateFunction = function(orderNumber) {
     console.log("I am private: " + orderNumber);
 };
-
-// TODO - look at using Object.create instead and not using prototype?
 
 /**
  * @class CustomerOrder.
