@@ -1,4 +1,5 @@
-var repo = require('../repo/repo').CustomerOrderRepository;
+var CustomerOrderRepository = require('../repo/repo').CustomerOrderRepository,
+    repo = new CustomerOrderRepository();
 
 /*
  * GET users listing.
