@@ -1,4 +1,4 @@
-var CustomerOrderRepository = require('../repo/repo').CustomerOrderRepository,
+var CustomerOrderRepository = require('../repo/CustomerOrderRepository').CustomerOrderRepository,
     repo = new CustomerOrderRepository();
 
 /*
