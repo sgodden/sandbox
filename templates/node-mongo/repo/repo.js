@@ -3,7 +3,6 @@ var
     server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
     DB_NAME = 'orderManagement-dev',
     conn = new mongodb.Db(DB_NAME, server, {safe: true}),
-    COLL_NAME = 'customerOrders',
 
     dojoRequire = require('dojo-node'),
     Deferred = dojoRequire('dojo/_base/Deferred'),
@@ -41,43 +40,12 @@ BaseRepository.prototype.execDb = function (callback) {
     return ret;
 };
 
-/**
- * @module A repository module for Customer Orders.
- * @type {{CustomerOrderRepository}}
- */
-CustomerOrderRepository = function() {
-};
+BaseRepository.prototype.entityClass = null;
 
-CustomerOrderRepository.prototype = new BaseRepository();
-
-/**
- * @method
- * @return {Deferred}
- */
-CustomerOrderRepository.prototype.findAll = function () {
+BaseRepository.prototype.count = function () {
+    var self = this;
     return this.execDb(function (db, d) {
-        var docs = [], customerOrder;
-        db.collection(COLL_NAME, function (err, coll) {
-            coll.find().each(function (err, item) {
-                if (item) {
-                    customerOrder = new CustomerOrder();
-                    customerOrder.orderNumber = item.orderNumber;
-                    customerOrder.customerReference = item.customerReference;
-                    docs.push(customerOrder);
-                    customerOrder.logOrderNumber();
-                }
-                else {
-                    // we get a null item when there are no more
-                    d.resolve(docs);
-                }
-            });
-        });
-    });
-};
-
-CustomerOrderRepository.prototype.count = function () {
-    return this.execDb(function (db, d) {
-        db.collection(COLL_NAME, function (err, coll) {
+        db.collection(self.COLL_NAME, function (err, coll) {
             coll.count(function (err, count) {
                 if (err) {
                     console.log('An error occurred on count');
@@ -91,9 +59,30 @@ CustomerOrderRepository.prototype.count = function () {
     });
 };
 
-CustomerOrderRepository.prototype.insert = function (order) {
+BaseRepository.prototype.findAll = function() {
+    var self = this;
     return this.execDb(function (db, d) {
-        db.collection(COLL_NAME, function (err, coll) {
+        var entities = [], entity;
+        db.collection(self.COLL_NAME, function (err, coll) {
+            coll.find().each(function (err, item) {
+                if (item) {
+                    entity = new self.entityClass();
+                    entity.hydrate(item);
+                    entities.push(entity);
+                }
+                else {
+                    // we get a null item when there are no more
+                    d.resolve(entities);
+                }
+            });
+        });
+    });
+};
+
+BaseRepository.prototype.insert = function (order) {
+    var self = this;
+    return this.execDb(function (db, d) {
+        db.collection(self.COLL_NAME, function (err, coll) {
             coll.insert(order, {safe: true}, function (err, doc) {
                 if (err) {
                     throw new Error(err);
@@ -105,6 +94,17 @@ CustomerOrderRepository.prototype.insert = function (order) {
         });
     });
 };
+
+/**
+ * @module A repository module for Customer Orders.
+ * @type {{CustomerOrderRepository}}
+ */
+CustomerOrderRepository = function() {
+};
+
+CustomerOrderRepository.prototype = new BaseRepository();
+CustomerOrderRepository.prototype.COLL_NAME = "customerOrders";
+CustomerOrderRepository.prototype.entityClass = CustomerOrder;
 
 exports.CustomerOrderRepository = CustomerOrderRepository;
 
