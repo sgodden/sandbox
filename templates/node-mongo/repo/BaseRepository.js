@@ -28,7 +28,8 @@ BaseRepository.prototype.execDb = function (callback) {
 
     conn.open(function (err, db) {
         if (err) {
-            console.log(err);
+            console.error(err);
+            console.error("Did you forget to start the server?")
         }
         var d = new Deferred();
         callback(db, d);
