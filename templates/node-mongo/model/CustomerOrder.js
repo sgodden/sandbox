@@ -21,11 +21,9 @@ CustomerOrder = function() {
     Object.defineProperty(this, 'orderNumber', {
         enumerable: true,
         get: function() {
-            console.log('Returning order number');
             return orderNumber;
         },
         set: function(_orderNumber) {
-            console.log('Setting order number');
             orderNumber = _orderNumber;
         }
     });

@@ -54,7 +54,6 @@ BaseRepository.prototype.count = function () {
                     console.log(err);
                     throw new Error(JSON.stringify(err));
                 }
-                console.log('count ' + count);
                 d.resolve(count);
             });
         });

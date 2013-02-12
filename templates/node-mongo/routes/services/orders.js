@@ -8,7 +8,6 @@ exports.list = function(req, res){
 
     var doList = function() {
         repo.findAll().then(function(docs){
-            console.debug(JSON.stringify(docs));
             res.send(docs);
         });
     };
