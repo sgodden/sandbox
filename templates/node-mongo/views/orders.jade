@@ -1,12 +1,21 @@
 extends layout
 
 block content
+
+  script
+    function OrderListController($scope, $http) {
+      $http({method: 'GET', url: 'services/orders/list.json'})
+        .success(function(data) {
+          $scope.orders = data;
+        });
+    }
+
   h1= title
-  table
-    thead
-      th Order Number
-      th Customer Reference
-    each order in orders
-      tr
-        td= order.orderNumber
-        td= order.customerReference
+  div(ng-controller="OrderListController")
+    table
+      thead
+        th Order Number
+        th Customer Reference
+      tr(ng-repeat="order in orders")
+        td {{order.orderNumber}}
+        td {{order.customerReference}}

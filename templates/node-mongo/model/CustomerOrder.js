@@ -19,6 +19,7 @@ CustomerOrder = function() {
     var customerReference = null;
 
     Object.defineProperty(this, 'orderNumber', {
+        enumerable: true,
         get: function() {
             console.log('Returning order number');
             return orderNumber;
@@ -30,6 +31,7 @@ CustomerOrder = function() {
     });
 
     Object.defineProperty(this, 'customerReference', {
+        enumerable: true,
         get: function() {
             return customerReference;
         },

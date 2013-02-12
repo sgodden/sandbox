@@ -6,6 +6,7 @@
 var express = require('express'),
     routes = require('./routes'),
     orders = require('./routes/orders'),
+    ordersService = require("./routes/services/orders"),
     http = require('http'),
     path = require('path');
 
@@ -29,6 +30,8 @@ app.configure('development', function(){
 
 app.get('/', routes.index);
 app.get('/orders', orders.list);
+
+app.get("/services/orders/list.json", ordersService.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
