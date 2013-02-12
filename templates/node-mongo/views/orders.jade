@@ -2,13 +2,7 @@ extends layout
 
 block content
 
-  script
-    function OrderListController($scope, $http) {
-      $http({method: 'GET', url: 'services/orders/list.json'})
-        .success(function(data) {
-          $scope.orders = data;
-        });
-    }
+  script(src="js/OrderListController.js")
 
   h1= title
   div(ng-controller="OrderListController")
