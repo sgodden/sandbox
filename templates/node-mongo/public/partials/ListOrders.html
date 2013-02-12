@@ -1,0 +1,16 @@
+<div ng-controller="OrderListController">
+
+    <table>
+        <thead>
+            <th>Order Number</th>
+            <th>Customer Reference</th>
+        </thead>
+        <tbody>
+            <tr ng-repeat="order in orders">
+                <td>{{order.orderNumber}}</td>
+                <td>{{order.customerReference}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
