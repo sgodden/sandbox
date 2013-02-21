@@ -1,0 +1,11 @@
+{
+  "name": "node-mongo-test-e2e",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "testacular": "*"
+  }
+}
