@@ -12,7 +12,7 @@
         async: true,
         packages: [{
             name: "app",
-            location: "../js/app"
+            location: "/js/app"
         }]
     };
 </script>
@@ -22,10 +22,12 @@
 <script type="text/javascript">
     require([
             "put-selector/put",
+            "app/OrderList",
 
             "dojo/domReady!"
-    ], function(put){
+    ], function(put, OrderList){
         console.log('asdasd');
+        new OrderList();
     });
 </script>
 </body>
