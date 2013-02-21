@@ -21,7 +21,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(path.join(__dirname, 'public-angular')));
+  app.use(express.static(path.join(__dirname, 'public-dojo')));
 });
 
 app.configure('development', function(){
