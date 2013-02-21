@@ -7,7 +7,26 @@
 <body>
 <h1 id="greeting">Hello</h1>
 <!-- load Dojo -->
-<script src="//ajax.googleapis.com/ajax/libs/dojo/1.8.1/dojo/dojo.js"
+<script>
+    var dojoConfig = {
+        async: true,
+        packages: [{
+            name: "app",
+            location: "../js/app"
+        }]
+    };
+</script>
+<script src="js-lib/dojo/dojo.js"
         data-dojo-config="async: true"></script>
+
+<script type="text/javascript">
+    require([
+            "put-selector/put",
+
+            "dojo/domReady!"
+    ], function(put){
+        console.log('asdasd');
+    });
+</script>
 </body>
 </html>
