@@ -1,0 +1,12 @@
+{
+    "name": "template-webapp",
+    "version":"0.0.1",
+    "directories": {
+        "lib": "."
+    },
+    "dependencies": {
+        "dojo":"*",
+        "dijit":"*"
+    },
+    "description": "A template web app."
+}

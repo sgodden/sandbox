@@ -1,0 +1,37 @@
+<div class="customer-order-edit-form">
+    <script type="dojo/require">at: "dojox/mvc/at"</script>
+    <div data-dojo-type="dijit.form.Form" data-dojo-attach-point="dapForm">
+        <div class="row">
+            <div class="label">
+                Id:
+            </div>
+            <input type="text"
+                   data-dojo-type="dijit.form.ValidationTextBox"
+                   data-dojo-attach-point="dapId"
+                    />
+        </div>
+        <div class="row">
+            <div class="label">
+                Order number:
+            </div>
+            <input type="text"
+                   data-dojo-type="dijit.form.ValidationTextBox"
+                   data-dojo-attach-point="dapOrderNumber"
+                   data-dojo-props="required: true"
+                    />
+        </div>
+        <div class="row">
+            <div class="label">
+                Customer reference:
+            </div>
+            <input type="text"
+                   data-dojo-type="dijit.form.ValidationTextBox"
+                   data-dojo-attach-point="dapCustomerReference"
+                   data-dojo-props="required: true"
+                    />
+        </div>
+        <div class="row">
+            <button data-dojo-type="dijit.form.Button" type="submit">Submit</button>
+        </div>
+    </div>
+</div>

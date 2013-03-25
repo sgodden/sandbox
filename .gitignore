@@ -20,6 +20,10 @@ extjs
 node_modules
 dgrid
 dgrid.js
+dijit
+dijit.js
+dojox
+less
 put-selector
 put-selector.js
 xstyle
