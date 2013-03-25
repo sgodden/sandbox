@@ -1,4 +1,5 @@
 var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').CustomerOrderRepository,
+	_ = require("underscore"),
     repo = new CustomerOrderRepository();
 
 /*
@@ -15,13 +16,16 @@ exports.list = function(req, res){
     repo.count().then(function(count){
         if (count === 0) {
             console.log('There are no orders - inserting one');
-			[10].forEach(function(){
-
+			var orders = [];
+			_.times(10, function(idx){
+				orders.push({
+					id: idx,
+					orderNumber: "O000000" + (idx + 1),
+					customerReference: "CR0000" + (idx + 1),
+					bookingDate: new Date()
+				});
 			});
-            repo.insert({
-                orderNumber: "O000001",
-                customerReference: "CR00001"
-            }).then(doList);
+            repo.insert(orders).then(doList);
         }
         else {
             doList();

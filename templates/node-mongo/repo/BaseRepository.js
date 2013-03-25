@@ -76,11 +76,15 @@ BaseRepository.prototype.findAll = function() {
     });
 };
 
-BaseRepository.prototype.insert = function (order) {
+/**
+ * @param {Array|Object} docs
+ * @return {Object} a promise.
+ */
+BaseRepository.prototype.insert = function (docs) {
     var self = this;
     return this.execDb(function (db, d) {
         db.collection(self.COLL_NAME, function (err, coll) {
-            coll.insert(order, {safe: true}, function (err, doc) {
+            coll.insert(docs, {safe: true}, function (err, doc) {
                 if (err) {
                     throw new Error(err);
                 }
