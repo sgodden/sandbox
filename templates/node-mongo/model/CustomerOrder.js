@@ -15,8 +15,20 @@ CustomerOrder = function() {
     /*
      * Private properties.
      */
+	var id = null;
     var orderNumber = null;
     var customerReference = null;
+	var bookingDate = new Date();
+
+    Object.defineProperty(this, 'id', {
+        enumerable: true,
+        get: function() {
+            return id;
+        },
+        set: function(_id) {
+            id = _id;
+        }
+    });
 
     Object.defineProperty(this, 'orderNumber', {
         enumerable: true,
@@ -35,6 +47,16 @@ CustomerOrder = function() {
         },
         set: function(value) {
             customerReference = value;
+        }
+    });
+
+    Object.defineProperty(this, 'bookingDate', {
+        enumerable: true,
+        get: function() {
+            return bookingDate;
+        },
+        set: function(value) {
+            bookingDate = value;
         }
     });
 

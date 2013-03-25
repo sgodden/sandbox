@@ -3,7 +3,7 @@ define([
     "dojo/store/JsonRest"
 ], function (declare, JsonRest) {
     return declare([JsonRest], {
-        idPoperty: "id",
+        idProperty: "id",
         target: "/services/orders/"
     });
 });
