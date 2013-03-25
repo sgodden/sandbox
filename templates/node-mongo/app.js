@@ -28,10 +28,7 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-app.get('/', routes.index);
-app.get('/orders', orders.list);
-
-app.get("/services/orders/list.json", ordersService.list);
+app.get("/services/orders/", ordersService.list);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

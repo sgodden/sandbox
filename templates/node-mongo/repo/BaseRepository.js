@@ -3,11 +3,7 @@ var
     server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
     DB_NAME = 'orderManagement-dev',
     conn = new mongodb.Db(DB_NAME, server, {safe: true}),
-
-    dojoRequire = require('dojo-node'),
-    Deferred = dojoRequire('dojo/_base/Deferred'),
-
-    lang = dojoRequire('dojo/_base/lang'),
+    Q = require('q'),
     BaseRepository;
 
 /**
@@ -21,25 +17,25 @@ BaseRepository = function() {
  * Returns a deferred, executes the passed callback within an open connection, and resolves the returned deferred
  * with the results of the callback after having closed the connection.
  * @param callback the callback to execute with the open connection.
- * @return {Deferred} the deferred which will be resolved with the results of the callback.
+ * @return {Object} the deferred which will be resolved with the results of the callback.
  */
 BaseRepository.prototype.execDb = function (callback) {
-    var ret = new Deferred();
+    var ret = Q.defer();
 
     conn.open(function (err, db) {
         if (err) {
             console.error(err);
             console.error("Did you forget to start the server?")
         }
-        var d = new Deferred();
+        var d = Q.defer();
         callback(db, d);
-        d.then(function (results) {
+        d.promise.then(function (results) {
             conn.close();
             ret.resolve(results);
         });
     });
 
-    return ret;
+    return ret.promise;
 };
 
 BaseRepository.prototype.entityClass = null;

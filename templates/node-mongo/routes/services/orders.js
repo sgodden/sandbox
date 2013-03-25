@@ -15,6 +15,9 @@ exports.list = function(req, res){
     repo.count().then(function(count){
         if (count === 0) {
             console.log('There are no orders - inserting one');
+			[10].forEach(function(){
+
+			});
             repo.insert({
                 orderNumber: "O000001",
                 customerReference: "CR00001"

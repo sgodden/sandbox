@@ -11,9 +11,16 @@ target
 *.ipr
 *~
 dojo
+dojo.js
 extjs
 .classpath
 .project
 .settings
 .metadata
 node_modules
+dgrid
+dgrid.js
+put-selector
+put-selector.js
+xstyle
+xstyle.js
