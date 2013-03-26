@@ -84,12 +84,12 @@ BaseRepository.prototype.insert = function (docs) {
     var self = this;
     return this.execDb(function (db, d) {
         db.collection(self.COLL_NAME, function (err, coll) {
-            coll.insert(docs, {safe: true}, function (err, doc) {
+            coll.insert(docs, {safe: true}, function (err, docs) {
                 if (err) {
                     throw new Error(err);
                 }
                 else {
-                    d.resolve(doc);
+                    d.resolve(docs);
                 }
             });
         });
