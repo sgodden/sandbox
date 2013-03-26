@@ -36,9 +36,10 @@ define([
         },
 
         _submit: function(e) {
+			var method = this._model.id ? "put" : "add";
             e.preventDefault();
             // TODO - handling of server side errors
-            new CustomerOrdersModel().put(this._model).then(
+            new CustomerOrdersModel()[method](this._model).then(
                 function(){
                     router.go("/orders");
                 },

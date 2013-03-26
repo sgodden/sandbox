@@ -22,7 +22,7 @@ define([
 
         postCreate: function() {
             this.inherited(arguments);
-            this.dapId.set("value", at(this.model, "id"))
+            this.dapId.value = this.model.id;
             this.dapCustomerReference.set("value", at(this.model, "customerReference"))
             this.dapOrderNumber.set("value", at(this.model, "orderNumber"))
         }
