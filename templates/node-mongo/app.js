@@ -30,6 +30,7 @@ app.configure('development', function(){
 
 app.get("/services/orders/", ordersService.list);
 app.get("/services/orders/:id", ordersService.get);
+app.put("/services/orders/:id", ordersService.put);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));

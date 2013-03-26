@@ -40,3 +40,7 @@ exports.get = function(req, res) {
 		res.send(order);
 	});
 };
+
+exports.put = function(req, res) {
+	console.log(req.body);
+}

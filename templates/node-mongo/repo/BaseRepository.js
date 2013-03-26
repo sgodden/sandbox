@@ -101,11 +101,16 @@ BaseRepository.prototype.findOne = function(query) {
 	return this.execDb(function (db, d) {
 		db.collection(self.COLL_NAME, function (err, coll) {
 			coll.findOne(query, function (err, doc) {
+				var entity;
 				if (err) {
 					throw new Error(err);
 				}
 				else {
-					d.resolve(doc);
+					if (doc) {
+						entity = new self.entityClass();
+						entity.hydrate(doc);
+					}
+					d.resolve(entity);
 				}
 			});
 		});
