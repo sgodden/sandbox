@@ -45,10 +45,15 @@ exports.put = function(req, res) {
 		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
 	}
 	repo.updateById(dto).then(function() {
-		res.send({status: "ok"});
+		res.send({ status: "ok" });
 	});
 };
 
 exports.post = function(req, res) {
-	console.log(req.body);
+	if (!req.body.bookingDate) {
+		req.body.bookingDate = new Date();
+	}
+	repo.insert(req.body).then(function() {
+		res.send({ status: "ok" })
+	});
 }
