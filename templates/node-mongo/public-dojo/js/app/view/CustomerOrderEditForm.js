@@ -27,7 +27,7 @@ define([
             this.dapId.value = this.model.id;
             this.dapCustomerReference.set("value", at(this.model, "customerReference"));
             this.dapOrderNumber.set("value", at(this.model, "orderNumber"));
-			this.own(on(this.dapForm, "submit", lang.hitch(this, function(evt) {
+			this.own(on(this.dapForm, "submit", lang.hitch(this, function() {
 				// focus the button so that the mvc bindings are updated
 				this.dapSubmitButton.focus();
 			})));
