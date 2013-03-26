@@ -76,14 +76,14 @@ CustomerOrder.prototype.logOrderNumber = function() {
 CustomerOrder.prototype.hydrate = function(item) {
     var self = this;
     [
-		'id',
-		'_id',
 		'orderNumber',
 		'customerReference',
 		'bookingDate'
 	].forEach(function(propertyName) {
         self[propertyName] = item[propertyName];
     });
+
+	this.id = item._id;
 };
 
 exports.CustomerOrder = CustomerOrder;

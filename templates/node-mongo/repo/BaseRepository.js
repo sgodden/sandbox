@@ -8,6 +8,15 @@ var
 	lang = djRequire("dojo/_base/lang"),
     BaseRepository;
 
+function fixId(query) {
+	var ret = lang.clone(query);
+	if (query.id) {
+		delete ret.id;
+		ret._id = new mongodb.ObjectID(query.id);
+	}
+	return ret;
+}
+
 /**
  * A base repository providing common repository methods.
  * @constructor
@@ -100,27 +109,7 @@ BaseRepository.prototype.insert = function (docs) {
 
 BaseRepository.prototype.findOne = function(query) {
 	var self = this;
-	return this.execDb(function (db, d) {
-		db.collection(self.COLL_NAME, function (err, coll) {
-			coll.findOne(query, function (err, doc) {
-				var entity;
-				if (err) {
-					throw new Error(err);
-				}
-				else {
-					if (doc) {
-						entity = new self.entityClass();
-						entity.hydrate(doc);
-					}
-					d.resolve(entity);
-				}
-			});
-		});
-	});
-};
-
-BaseRepository.prototype.findOne = function(query) {
-	var self = this;
+	query = fixId(query);
 	return this.execDb(function (db, d) {
 		db.collection(self.COLL_NAME, function (err, coll) {
 			coll.findOne(query, function (err, doc) {
@@ -158,11 +147,11 @@ BaseRepository.prototype.update = function(query, doc) {
 BaseRepository.prototype.updateById = function(object) {
 	var self = this,
 		query = {
-			_id: new mongodb.ObjectID(object._id)
+			_id: new mongodb.ObjectID(object.id)
 		},
 		clone = lang.clone(object);
-	// mongo doesn't like people trying to update the id
-	delete clone._id;
+	// we don't want to store the id twice for no purpose
+	delete clone.id;
 	return this.execDb(function (db, d) {
 		db.collection(self.COLL_NAME, function (err, coll) {
 			coll.update(query, clone, function (err) {

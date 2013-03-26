@@ -18,7 +18,6 @@ exports.list = function(req, res){
 			var orders = [];
 			_.times(10, function(idx){
 				orders.push({
-					id: idx,
 					orderNumber: "O000000" + (idx + 1),
 					customerReference: "CR0000" + (idx + 1),
 					bookingDate: new Date()
@@ -36,7 +35,7 @@ exports.list = function(req, res){
 
 exports.get = function(req, res) {
 	var query = {
-		id: new Number(req.params.id).valueOf()
+		id: req.params.id
 	};
 	repo.findOne(query).then(function(order) {
 		res.send(order);
