@@ -77,6 +77,7 @@ CustomerOrder.prototype.hydrate = function(item) {
     var self = this;
     [
 		'id',
+		'_id',
 		'orderNumber',
 		'customerReference',
 		'bookingDate'

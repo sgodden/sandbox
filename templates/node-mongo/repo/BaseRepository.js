@@ -4,6 +4,8 @@ var
     DB_NAME = 'orderManagement-dev',
     conn = new mongodb.Db(DB_NAME, server, {safe: true}),
     Q = require('q'),
+	djRequire = require("dojo-node"),
+	lang = djRequire("dojo/_base/lang"),
     BaseRepository;
 
 /**
@@ -115,7 +117,7 @@ BaseRepository.prototype.findOne = function(query) {
 			});
 		});
 	});
-}
+};
 
 BaseRepository.prototype.findOne = function(query) {
 	var self = this;
@@ -136,7 +138,7 @@ BaseRepository.prototype.findOne = function(query) {
 			});
 		});
 	});
-}
+};
 
 BaseRepository.prototype.update = function(query, doc) {
 	var self = this;
@@ -151,7 +153,28 @@ BaseRepository.prototype.update = function(query, doc) {
 			});
 		});
 	});
-}
+};
+
+BaseRepository.prototype.updateById = function(object) {
+	var self = this,
+		query = {
+			_id: new mongodb.ObjectID(object._id)
+		},
+		clone = lang.clone(object);
+	// mongo doesn't like people trying to update the id
+	delete clone._id;
+	return this.execDb(function (db, d) {
+		db.collection(self.COLL_NAME, function (err, coll) {
+			coll.update(query, clone, function (err) {
+				if (err) {
+					throw new Error(err);
+				} else {
+					d.resolve();
+				}
+			});
+		});
+	});
+};
 
 exports.BaseRepository = BaseRepository;
 

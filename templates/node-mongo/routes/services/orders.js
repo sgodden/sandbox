@@ -4,15 +4,6 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
 	lang = djRequire("dojo/_base/lang"),
     repo = new CustomerOrderRepository();
 
-/**
- * @function
- * @param {model.CustomerOrder} order the persistent order.
- * @param {Object} dto the dto received from an external source.
- */
-function mergeExternal(order, dto) {
-
-}
-
 exports.list = function(req, res){
 
     var doList = function() {
@@ -58,7 +49,7 @@ exports.put = function(req, res) {
 	if (dto.bookingDate) {
 		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
 	}
-	repo.update({id: dto.id}, dto).then(function() {
+	repo.updateById(dto).then(function() {
 		res.send({status: "ok"});
 	});
-}
+};
