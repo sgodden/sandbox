@@ -12,7 +12,7 @@ exports.list = function(req, res){
 
     repo.count().then(function(count){
         if (count === 0) {
-            console.log('There are no orders - inserting one');
+            console.log('There are no orders - inserting some');
 			var orders = [];
 			_.times(10, function(idx){
 				orders.push({
@@ -33,5 +33,10 @@ exports.list = function(req, res){
 };
 
 exports.get = function(req, res) {
-	console.log(req.params.id);
+	var query = {
+		id: new Number(req.params.id).valueOf()
+	};
+	repo.findOne(query).then(function(order) {
+		res.send(order);
+	});
 };

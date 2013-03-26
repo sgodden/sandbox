@@ -96,6 +96,22 @@ BaseRepository.prototype.insert = function (docs) {
     });
 };
 
+BaseRepository.prototype.findOne = function(query) {
+	var self = this;
+	return this.execDb(function (db, d) {
+		db.collection(self.COLL_NAME, function (err, coll) {
+			coll.findOne(query, function (err, doc) {
+				if (err) {
+					throw new Error(err);
+				}
+				else {
+					d.resolve(doc);
+				}
+			});
+		});
+	});
+}
+
 exports.BaseRepository = BaseRepository;
 
 
