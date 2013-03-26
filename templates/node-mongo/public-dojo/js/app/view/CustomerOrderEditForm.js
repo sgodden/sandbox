@@ -31,6 +31,10 @@ define([
 				// focus the button so that the mvc bindings are updated
 				this.dapSubmitButton.focus();
 			})));
-        }
+        },
+
+		startup: function() {
+			this.dapOrderNumber.focus();
+		}
     });
 });

@@ -5,7 +5,6 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
     repo = new CustomerOrderRepository();
 
 exports.list = function(req, res){
-
     var doList = function() {
         repo.findAll().then(function(docs){
             res.send(docs);
@@ -29,8 +28,6 @@ exports.list = function(req, res){
             doList();
         }
     });
-
-
 };
 
 exports.get = function(req, res) {
