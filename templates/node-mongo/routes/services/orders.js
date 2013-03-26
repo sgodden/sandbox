@@ -2,9 +2,6 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
 	_ = require("underscore"),
     repo = new CustomerOrderRepository();
 
-/*
- * GET users listing.
- */
 exports.list = function(req, res){
 
     var doList = function() {
@@ -33,4 +30,8 @@ exports.list = function(req, res){
     });
 
 
+};
+
+exports.get = function(req, res) {
+	console.log(req.params.id);
 };
