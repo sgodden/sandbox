@@ -25,8 +25,8 @@ CustomerOrder = function() {
         get: function() {
             return id;
         },
-        set: function(_id) {
-            id = _id;
+        set: function(value) {
+            id = value;
         }
     });
 
@@ -35,8 +35,8 @@ CustomerOrder = function() {
         get: function() {
             return orderNumber;
         },
-        set: function(_orderNumber) {
-            orderNumber = _orderNumber;
+        set: function(value) {
+            orderNumber = value;
         }
     });
 
@@ -75,7 +75,12 @@ CustomerOrder.prototype.logOrderNumber = function() {
 
 CustomerOrder.prototype.hydrate = function(item) {
     var self = this;
-    ['orderNumber', 'customerReference'].forEach(function(propertyName) {
+    [
+		'id',
+		'orderNumber',
+		'customerReference',
+		'bookingDate'
+	].forEach(function(propertyName) {
         self[propertyName] = item[propertyName];
     });
 };
