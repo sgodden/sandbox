@@ -34,6 +34,7 @@ define([
         },
 
 		startup: function() {
+			this.inherited(arguments);
 			this.dapOrderNumber.focus();
 		}
     });

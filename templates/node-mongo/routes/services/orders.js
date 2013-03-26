@@ -40,7 +40,6 @@ exports.get = function(req, res) {
 };
 
 exports.put = function(req, res) {
-	console.log(req.body);
 	var dto = req.body;
 	if (dto.bookingDate) {
 		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
@@ -49,3 +48,7 @@ exports.put = function(req, res) {
 		res.send({status: "ok"});
 	});
 };
+
+exports.post = function(req, res) {
+	console.log(req.body);
+}
