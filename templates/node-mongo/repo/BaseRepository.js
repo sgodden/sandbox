@@ -117,6 +117,42 @@ BaseRepository.prototype.findOne = function(query) {
 	});
 }
 
+BaseRepository.prototype.findOne = function(query) {
+	var self = this;
+	return this.execDb(function (db, d) {
+		db.collection(self.COLL_NAME, function (err, coll) {
+			coll.findOne(query, function (err, doc) {
+				var entity;
+				if (err) {
+					throw new Error(err);
+				}
+				else {
+					if (doc) {
+						entity = new self.entityClass();
+						entity.hydrate(doc);
+					}
+					d.resolve(entity);
+				}
+			});
+		});
+	});
+}
+
+BaseRepository.prototype.update = function(query, doc) {
+	var self = this;
+	return this.execDb(function (db, d) {
+		db.collection(self.COLL_NAME, function (err, coll) {
+			coll.update(query, doc, function (err) {
+				if (err) {
+					throw new Error(err);
+				} else {
+					d.resolve();
+				}
+			});
+		});
+	});
+}
+
 exports.BaseRepository = BaseRepository;
 
 
