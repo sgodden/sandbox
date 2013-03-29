@@ -1,4 +1,6 @@
-var somePrivateFunction, CustomerOrder;
+"use strict";
+
+var CustomerOrder;
 
 /**
  * @class CustomerOrder.
@@ -13,6 +15,10 @@ CustomerOrder = function() {
     var customerReference = null;
 	var bookingDate = new Date();
 
+	/**
+	 * @field
+	 * @type {string}
+	 */
     Object.defineProperty(this, 'id', {
         enumerable: true,
         get: function() {
@@ -56,7 +62,7 @@ CustomerOrder = function() {
     // Oh yeahhhh!!!!  Javascript is really rocking these days.
     // Now nobody can bugger about with us, defining new properties etc.
     // TODO - this does not seem to have the effect I thought it would
-    //Object.seal(this);
+    Object.seal(this);
 };
 
 /**
