@@ -1,6 +1,7 @@
 "use strict";
 
 var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').CustomerOrderRepository,
+	CustomerOrder = require('../../model/CustomerOrder').CustomerOrder,
 	_ = require("underscore"),
 	djRequire = require("dojo-node"),
 	lang = djRequire("dojo/_base/lang"),
@@ -18,11 +19,10 @@ exports.list = function(req, res){
             console.log('There are no orders - inserting some');
 			var orders = [];
 			_.times(10, function(idx){
-				orders.push({
+				orders.push(new CustomerOrder({
 					orderNumber: "O000000" + (idx + 1),
-					customerReference: "CR0000" + (idx + 1),
-					bookingDate: new Date()
-				});
+					customerReference: "CR0000" + (idx + 1)
+				}));
 			});
             repo.insert(orders).then(doList);
         }
