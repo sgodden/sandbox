@@ -1,12 +1,5 @@
 var somePrivateFunction, CustomerOrder;
 
-/*
- * Functions that are private to the module.
- */
-somePrivateFunction = function(orderNumber) {
-    console.log("I am private: " + orderNumber);
-};
-
 /**
  * @class CustomerOrder.
  * @constructor
@@ -67,12 +60,10 @@ CustomerOrder = function() {
 };
 
 /**
- * @method logOrderNumber.
+ * @function
+ * @param {Object} item the item loaded from the persistent store.
+ * @description hydrates an instance of CustomerOrder from persistent data.
  */
-CustomerOrder.prototype.logOrderNumber = function() {
-    somePrivateFunction(this.orderNumber);
-};
-
 CustomerOrder.prototype.hydrate = function(item) {
     var self = this;
     [
