@@ -1,3 +1,5 @@
+"use strict";
+
 var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').CustomerOrderRepository,
 	_ = require("underscore"),
 	djRequire = require("dojo-node"),

@@ -19,7 +19,6 @@ CustomerOrderRepository.prototype.entityClass = CustomerOrder;
  * @return {number}
  */
 CustomerOrderRepository.prototype.count = function() {
-    console.log("Count in CustomerOrderRepository");
     return BaseRepository.prototype.count.apply(this);
 };
 
