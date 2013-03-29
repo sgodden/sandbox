@@ -22,9 +22,10 @@
 	<script src="js-lib/dojo/dojo.js"></script>
 	<script type="text/javascript">
 		require([
+			"dbootstrap/main",
 			"app/control/AppController",
 			"dijit/layout/BorderContainer"
-		], function (AppController, BorderContainer) {
+		], function (dbootstrap, AppController, BorderContainer) {
 			var container = new BorderContainer({
 				id: "appContainer",
 				style: {
@@ -36,7 +37,7 @@
 
 	</script>
 </head>
-<body class="claro" id="body">
+<body class="dbootstrap" id="body">
 </body>
 
 </html>
