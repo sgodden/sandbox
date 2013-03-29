@@ -10,7 +10,7 @@ var
 
 function fixId(query) {
 	var ret = lang.clone(query);
-	if (query.id) {
+	if (query.id && !(query.id instanceof mongodb.ObjectID)) {
 		delete ret.id;
 		ret._id = new mongodb.ObjectID(query.id);
 	}
