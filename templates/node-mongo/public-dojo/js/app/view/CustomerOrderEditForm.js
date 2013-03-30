@@ -10,6 +10,7 @@ define([
 
     "dijit/form/Form",
     "dijit/form/ValidationTextBox",
+    "dijit/form/DateTextBox",
     "dijit/form/Button"
 ], function (declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplatedMixin, template, at, on) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplatedMixin], {
@@ -20,6 +21,7 @@ define([
         dapId: null,
         dapCustomerReference: null,
         dapOrderNumber: null,
+        dapBookingDate: null,
 		dapSubmitButton: null,
 
         postCreate: function() {
@@ -27,6 +29,7 @@ define([
             this.dapId.value = this.model.id;
             this.dapCustomerReference.set("value", at(this.model, "customerReference"));
             this.dapOrderNumber.set("value", at(this.model, "orderNumber"));
+            this.dapBookingDate.set("value", at(this.model, "bookingDate"));
 			this.own(on(this.dapForm, "submit", lang.hitch(this, function() {
 				// focus the button so that the mvc bindings are updated
 				this.dapSubmitButton.focus();
