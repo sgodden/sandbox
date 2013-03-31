@@ -11,7 +11,8 @@ var express = require('express'),
     path = require('path'),
 	UserRepository = require("./repo/UserRepository"),
 	userRepo = new UserRepository(),
-	everyauth = require("everyauth");
+	everyauth = require("everyauth"),
+	Promise = require("everyauth/lib/Promise");
 
 everyauth.debug = true;
 
@@ -49,14 +50,19 @@ everyauth
 		}, 200);
 	})
 	.authenticate( function (login, password) {
-		var errors = [];
-		if (!login) errors.push('Missing login');
-		if (!password) errors.push('Missing password');
-		if (errors.length) return errors;
-		var user = usersByLogin[login];
-		if (!user) return ['Login failed'];
-		if (user.password !== password) return ['Login failed'];
-		return user;
+		var promise = new Promise();
+//		var errors = [];
+//		if (!login) errors.push('Missing login');
+//		if (!password) errors.push('Missing password');
+//		if (errors.length) return errors;
+//		var user = usersByLogin[login];
+//		if (!user) return ['Login failed'];
+//		if (user.password !== password) return ['Login failed'];
+//		return user;
+		setTimeout(function() {
+			promise.fulfill({login: "foo"});
+		});
+		return promise;
 	})
 	.getRegisterPath('/register')
 	.postRegisterPath('/register')
