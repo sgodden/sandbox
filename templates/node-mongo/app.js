@@ -37,7 +37,6 @@ function addUser (source, sourceUser) {
 
 everyauth
 	.password
-	.loginWith('email')
 	.getLoginPath('/login')
 	.postLoginPath('/login')
 	.loginView('login.jade')
@@ -50,7 +49,7 @@ everyauth
 		}, 200);
 	})
 	.authenticate( function (login, password) {
-		var promise = new Promise();
+		var pr = new Promise();
 //		var errors = [];
 //		if (!login) errors.push('Missing login');
 //		if (!password) errors.push('Missing password');
@@ -59,10 +58,15 @@ everyauth
 //		if (!user) return ['Login failed'];
 //		if (user.password !== password) return ['Login failed'];
 //		return user;
-		setTimeout(function() {
-			promise.fulfill({login: "foo"});
+		userRepo.findOne({username: login}).then(function(user) {
+			if (user) {
+				pr.fulfill(user);
+			}
+			else {
+				pr.fulfill(["User or password incorrect"]);
+			}
 		});
-		return promise;
+		return pr;
 	})
 	.getRegisterPath('/register')
 	.postRegisterPath('/register')
