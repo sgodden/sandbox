@@ -49,7 +49,7 @@ everyauth
 		}, 200);
 	})
 	.authenticate( function (login, password) {
-		var pr = new Promise();
+		var pr = this.Promise();
 //		var errors = [];
 //		if (!login) errors.push('Missing login');
 //		if (!password) errors.push('Missing password');
@@ -59,6 +59,7 @@ everyauth
 //		if (user.password !== password) return ['Login failed'];
 //		return user;
 		userRepo.findOne({username: login}).then(function(user) {
+			// TODO - check the password
 			if (user) {
 				pr.fulfill(user);
 			}
