@@ -37,6 +37,7 @@ define([
 
         _submit: function(e) {
 			var method = this._model.id ? "put" : "add";
+			this._model._csrf = dojo.cookie("_csrf");
             e.preventDefault();
             // TODO - handling of server side errors
             new CustomerOrdersModel()[method](this._model).then(

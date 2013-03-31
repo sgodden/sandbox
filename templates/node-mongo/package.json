@@ -11,6 +11,7 @@
     "mongodb": "*" ,
     "declare": "*",
     "dojo-node": "*",
-    "eventemitter2": "*"
+    "eventemitter2": "*",
+	"everyauth": "*"
   }
 }
