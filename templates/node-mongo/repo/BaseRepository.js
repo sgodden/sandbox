@@ -1,12 +1,19 @@
 var
     mongodb = require('mongodb'),
-    server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT),
+    server = new mongodb.Server('localhost', mongodb.Connection.DEFAULT_PORT, {auto_reconnect: true}),
     DB_NAME = 'orderManagement-dev',
     conn = new mongodb.Db(DB_NAME, server, {safe: true}),
     Q = require('q'),
 	djRequire = require("dojo-node"),
 	lang = djRequire("dojo/_base/lang"),
     BaseRepository;
+
+conn.open(function(err) {
+	if (err) {
+		console.error(err);
+		console.error("Did you forget to start the server?")
+	}
+});
 
 function fixId(query) {
 	var ret = lang.clone(query);
@@ -50,15 +57,15 @@ BaseRepository.prototype.execDb = function (callback) {
 };
 
 BaseRepository.prototype.execCollection = function (callback) {
-	var self = this;
-	return this.execDb(function (db, d) {
-		db.collection(self.COLL_NAME, function (err, coll) {
+	var self = this,
+		d = Q.defer();
+		conn.collection(self.COLL_NAME, function (err, coll) {
 			if (err) {
 				throw new Error("Error accessing collection");
 			}
 			callback(coll, d);
 		});
-	});
+	return d.promise;
 }
 
 BaseRepository.prototype.entityClass = null;

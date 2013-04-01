@@ -130,7 +130,7 @@ app.configure('development', function(){
 });
 
 app.get("/services/*", function(req, res, next) {
-	if (req.session.loggedIn) {
+	if (req.session.auth.loggedIn) {
 		console.log("User is logged in");
 	} else {
 		console.log("User is not logged in");
