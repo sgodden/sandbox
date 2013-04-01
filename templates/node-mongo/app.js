@@ -35,8 +35,16 @@ function addUser (source, sourceUser) {
 	return user;
 }
 
+everyauth.everymodule
+	.findUserById(function(userId, callback) {
+		userRepo.findOne({username: userId}).then(function(user) {
+			callback(null, user);
+		});
+	});
+
 everyauth
 	.password
+	.userPkey("username")
 	.getLoginPath('/login')
 	.postLoginPath('/login')
 	.loginView('login.jade')
@@ -119,6 +127,15 @@ app.configure(function(){
 
 app.configure('development', function(){
   app.use(express.errorHandler());
+});
+
+app.get("/services/*", function(req, res, next) {
+	if (req.session.loggedIn) {
+		console.log("User is logged in");
+	} else {
+		console.log("User is not logged in");
+	}
+	next();
 });
 
 app.get("/services/orders/", ordersService.list);
