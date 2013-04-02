@@ -11,6 +11,7 @@ var express = require('express'),
 	path = require('path'),
 	UserRepository = require("./repo/UserRepository"),
 	userRepo = new UserRepository(),
+	User = require("./model/User").User,
 	everyauth = require("everyauth"),
 	isLoggedIn,
 	redirectToLogin,
@@ -58,17 +59,22 @@ everyauth
 	.getRegisterPath('/register')
 	.postRegisterPath('/register')
 	.registerView('register.jade')
-	.registerLocals(function (req, res, done) {
-		setTimeout(function () {
-			done(null, {
-				title: 'Async Register'
-			});
-		}, 200);
-	})
-	.validateRegistration(function (newUserAttrs, errors) {
-		var login = newUserAttrs.login;
-		if (usersByLogin[login]) errors.push('Login already taken');
-		return errors;
+	.validateRegistration(function (data) {
+		var p = this.Promise();
+		userRepo.findOne({username: data.login}).then(function(user) {
+			if (user) {
+				p.fulfill(["User id already registered"]);
+			} else {
+				var newuser = new User({
+					username: data.login,
+					password: data.password
+				});
+				userRepo.insert(newuser).then(function(docs) {
+					p.fulfill(docs[0]);
+				});
+			}
+		});
+		return p;
 	})
 	.registerUser(function (newUserAttrs) {
 		var login = newUserAttrs[this.loginKey()];

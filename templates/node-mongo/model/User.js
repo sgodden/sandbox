@@ -12,6 +12,7 @@ User = function(args) {
 	var id = null,
 		username = null,
     	fullname = null,
+		password = null,
 		roles = [];
 
 	/**
@@ -55,6 +56,16 @@ User = function(args) {
         },
         set: function(value) {
             roles = value;
+        }
+    });
+
+    Object.defineProperty(this, 'password', {
+        enumerable: true,
+        get: function() {
+            return password;
+        },
+        set: function(value) {
+            password = value;
         }
     });
 
