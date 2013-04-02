@@ -4,43 +4,30 @@
  * Module dependencies.
  */
 var express = require('express'),
-    routes = require('./routes'),
-    orders = require('./routes/orders'),
-    ordersService = require("./routes/services/orders"),
-    http = require('http'),
-    path = require('path'),
+	routes = require('./routes'),
+	orders = require('./routes/orders'),
+	ordersService = require("./routes/services/orders"),
+	http = require('http'),
+	path = require('path'),
 	UserRepository = require("./repo/UserRepository"),
 	userRepo = new UserRepository(),
 	everyauth = require("everyauth"),
-	Promise = require("everyauth/lib/Promise");
+	Promise = require("everyauth/lib/Promise"),
+	isLoggedIn,
+	redirectToLogin,
+	forbidIfNotLoggedIn,
+	app;
 
-everyauth.debug = true;
+/*-------------------------
+ * Everyauth configuration
+ * ------------------------ */
+everyauth.debug = false;
 
-var usersById = {};
-var nextUserId = 0;
-var usersByLogin = {
-	'brian@example.com': addUser({ login: 'brian@example.com', password: 'password'})
-};
-
-function addUser (source, sourceUser) {
-	var user;
-	if (arguments.length === 1) { // password-based
-		user = sourceUser = source;
-		user.id = ++nextUserId;
-		return usersById[nextUserId] = user;
-	} else { // non-password-based
-		user = usersById[++nextUserId] = {id: nextUserId};
-		user[source] = sourceUser;
-	}
-	return user;
-}
-
-everyauth.everymodule
-	.findUserById(function(userId, callback) {
-		userRepo.findOne({username: userId}).then(function(user) {
-			callback(null, user);
-		});
+everyauth.everymodule.findUserById(function (userId, callback) {
+	userRepo.findOne({username: userId}).then(function (user) {
+		callback(null, user);
 	});
+});
 
 everyauth
 	.password
@@ -48,25 +35,17 @@ everyauth
 	.getLoginPath('/login')
 	.postLoginPath('/login')
 	.loginView('login.jade')
-	.loginLocals( function (req, res, done) {
-		setTimeout( function () {
+	.loginLocals(function (req, res, done) {
+		setTimeout(function () {
 			done(null, {
 				title: 'Async login',
 				everyauth: everyauth
 			});
 		}, 200);
 	})
-	.authenticate( function (login, password) {
+	.authenticate(function (login, password) {
 		var pr = this.Promise();
-//		var errors = [];
-//		if (!login) errors.push('Missing login');
-//		if (!password) errors.push('Missing password');
-//		if (errors.length) return errors;
-//		var user = usersByLogin[login];
-//		if (!user) return ['Login failed'];
-//		if (user.password !== password) return ['Login failed'];
-//		return user;
-		userRepo.findOne({username: login}).then(function(user) {
+		userRepo.findOne({username: login}).then(function (user) {
 			// TODO - check the password
 			if (user) {
 				pr.fulfill(user);
@@ -80,62 +59,81 @@ everyauth
 	.getRegisterPath('/register')
 	.postRegisterPath('/register')
 	.registerView('register.jade')
-//    .registerLocals({
-//      title: 'Register'
-//    })
-//    .registerLocals(function (req, res) {
-//      return {
-//        title: 'Sync Register'
-//      }
-//    })
-	.registerLocals( function (req, res, done) {
-		setTimeout( function () {
+	.registerLocals(function (req, res, done) {
+		setTimeout(function () {
 			done(null, {
 				title: 'Async Register'
 			});
 		}, 200);
 	})
-	.validateRegistration( function (newUserAttrs, errors) {
+	.validateRegistration(function (newUserAttrs, errors) {
 		var login = newUserAttrs.login;
 		if (usersByLogin[login]) errors.push('Login already taken');
 		return errors;
 	})
-	.registerUser( function (newUserAttrs) {
+	.registerUser(function (newUserAttrs) {
 		var login = newUserAttrs[this.loginKey()];
 		return usersByLogin[login] = addUser(newUserAttrs);
 	})
-	.loginSuccessRedirect('/')
+	.loginSuccessRedirect('/site.html')
 	.registerSuccessRedirect('/');
 
-var app = express();
+/*-----------------------------
+ * Express app configuration
+ * ----------------------------*/
+app = express();
 
-app.configure(function(){
-  app.set('port', process.env.PORT || 3000);
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.favicon());
-  app.use(express.logger('dev'));
-  app.use(express.bodyParser());
-  app.use(express.static(path.join(__dirname, 'public-dojo')));
-  app.use(express.methodOverride());
-  app.use(express.cookieParser());
-  app.use(express.cookieSession({secret: "27yaSpes2uphequ8"}));
-//  app.use(express.csrf());
-  app.use(app.router);
-  app.use(everyauth.middleware());
-});
+isLoggedIn = function(req) {
+	return req.session && req.session.auth && req.session.auth.loggedIn;
+};
 
-app.configure('development', function(){
-  app.use(express.errorHandler());
-});
-
-app.get("/services/*", function(req, res, next) {
-	if (req.session.auth.loggedIn) {
-		console.log("User is logged in");
+forbidIfNotLoggedIn = function(req, res, next) {
+	if (!isLoggedIn(req)) {
+		res.status(403).send("Get out of it");
 	} else {
-		console.log("User is not logged in");
+		next();
 	}
-	next();
+}
+
+redirectToLogin = function(req, res, next) {
+	if (!isLoggedIn(req)) {
+		console.log("Not logged in");
+		res.redirect("/login");
+	} else {
+		// all is in order
+		next();
+	}
+};
+
+app.configure(function () {
+	app.set('port', process.env.PORT || 3000);
+	app.set('views', __dirname + '/views');
+	app.set('view engine', 'jade');
+	app.use(express.favicon());
+	app.use(express.logger('dev'));
+	app.use(express.bodyParser());
+	app.use(express.cookieParser());
+	app.use(express.cookieSession({secret: "27yaSpes2uphequ8"}));
+
+	app.get("/site.html", function (req, res, next) {
+		console.log("Accessing site");
+		redirectToLogin(req, res, next);
+	});
+
+	app.use(express.static(path.join(__dirname, 'public-dojo')));
+	app.use(express.methodOverride());
+//  app.use(express.csrf());
+	app.use(app.router);
+	app.use(everyauth.middleware());
+});
+
+app.configure('development', function () {
+	app.use(express.errorHandler());
+});
+
+
+app.get("/services/*", function (req, res, next) {
+	forbidIfNotLoggedIn(req, res, next);
 });
 
 app.get("/services/orders/", ordersService.list);
@@ -144,7 +142,7 @@ app.put("/services/orders/:id", ordersService.put);
 app.post("/services/orders/", ordersService.post);
 
 // let's create some users if there are none already
-userRepo.count().then(function(count) {
+userRepo.count().then(function (count) {
 	if (count === 0) {
 		userRepo.insert([
 			{
@@ -163,6 +161,6 @@ userRepo.count().then(function(count) {
 	}
 });
 
-http.createServer(app).listen(app.get('port'), function(){
-  console.log("Express server listening on port " + app.get('port'));
+http.createServer(app).listen(app.get('port'), function () {
+	console.log("Express server listening on port " + app.get('port'));
 });
