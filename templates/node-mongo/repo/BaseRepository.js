@@ -26,34 +26,9 @@ function fixId(query) {
 
 /**
  * A base repository providing common repository methods.
- * @constructor
+ * @class
  */
 BaseRepository = function() {
-};
-
-/**
- * Returns a deferred, executes the passed callback within an open connection, and resolves the returned deferred
- * with the results of the callback after having closed the connection.
- * @param callback the callback to execute with the open connection.
- * @return {Object} the deferred which will be resolved with the results of the callback.
- */
-BaseRepository.prototype.execDb = function (callback) {
-    var ret = Q.defer();
-
-    conn.open(function (err, db) {
-        if (err) {
-            console.error(err);
-            console.error("Did you forget to start the server?")
-        }
-        var d = Q.defer();
-        callback(db, d);
-        d.promise.then(function (results) {
-            conn.close();
-            ret.resolve(results);
-        });
-    });
-
-    return ret.promise;
 };
 
 BaseRepository.prototype.execCollection = function (callback) {
