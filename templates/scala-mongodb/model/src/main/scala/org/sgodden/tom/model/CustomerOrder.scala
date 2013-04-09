@@ -4,7 +4,7 @@ import javax.validation.constraints.{Pattern,NotNull}
 import collection.mutable.{HashSet, Set => MutableSet}
 import org.springframework.beans.factory.annotation.{Configurable, Autowired}
 import java.util.{Date, Map => JavaMap}
-import org.joda.time.DateTime
+import org.joda.time.{LocalDate, DateTime}
 import collection.JavaConverters
 import JavaConverters._
 import javax.validation.{ConstraintViolation, Validation}
@@ -24,7 +24,7 @@ class CustomerOrder() extends ICustomerOrder {
   @NotNull
   var status: CustomerOrderStatus.Value = CustomerOrderStatus.NEW
   @NotNull
-  var bookingDate: DateTime = new DateTime(new Date().getTime)
+  var bookingDate: LocalDate = new LocalDate(new Date().getTime)
   var collectionDetails: CollectionDetails = null
   var deliveryDetails: DeliveryDetails = null
   val orderLines: MutableSet[CustomerOrderLine] = new HashSet[CustomerOrderLine]
@@ -73,7 +73,7 @@ class CustomerOrder() extends ICustomerOrder {
   }
 
   override def getBookingDate = bookingDate
-  override def setBookingDate(date: DateTime) {
+  override def setBookingDate(date: LocalDate) {
     this.bookingDate = date
   }
 

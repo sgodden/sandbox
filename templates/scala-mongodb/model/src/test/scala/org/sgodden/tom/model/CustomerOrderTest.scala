@@ -3,7 +3,7 @@ package org.sgodden.tom.model
 import org.testng.annotations.Test
 import org.testng.Assert._
 import javax.validation.{ConstraintViolation, Validation}
-import org.joda.time.DateTime
+import org.joda.time.{LocalDate, DateTime}
 
 @Test
 class CustomerOrderTest {
@@ -22,7 +22,7 @@ class CustomerOrderTest {
     val order = new CustomerOrder {
       setOrderNumber("ordnum")
       setCustomerReference("foo")
-      setBookingDate(new DateTime)
+      setBookingDate(new LocalDate)
     }
     // TODO - message should be i18nd
     assertTrue(containsViolation(getViolations(order), "customerReference", "Customer reference must begin with 'cr'"))
