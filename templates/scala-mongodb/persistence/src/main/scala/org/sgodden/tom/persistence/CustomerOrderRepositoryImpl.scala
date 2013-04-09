@@ -6,6 +6,9 @@ import com.mongodb.casbah.Imports._
 import com.mongodb.casbah.commons.conversions.scala._
 import model.CustomerOrderP
 import org.sgodden.tom.model.{CustomerOrder, ICustomerOrder, CustomerOrderRepository}
+import com.mongodb.casbah.MongoConnection
+import com.mongodb.casbah.commons.MongoDBObject
+import org.bson.types.ObjectId
 
 class CustomerOrderRepositoryImpl(databaseName: String) extends CustomerOrderRepository {
   val conn = MongoConnection()

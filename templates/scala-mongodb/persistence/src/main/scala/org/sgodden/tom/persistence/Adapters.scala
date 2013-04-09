@@ -16,7 +16,7 @@ object CustomerOrderAdapter extends BaseAdapter {
       "customerReference" -> order.getCustomerReference,
       "orderNumber" -> order.getOrderNumber,
       "status" -> order.getStatus.toString,
-      "bookingDate" -> calendarToString(order.getBookingDate),
+      "bookingDate" -> order.getBookingDate,
       "collectionDetails" -> CollectionDetailsAdapter(order.getCollectionDetails),
       "deliveryDetails" -> DeliveryDetailsAdapter(order.getDeliveryDetails)
     )
@@ -116,7 +116,7 @@ class BaseAdapter {
     if (dbo.get(field) == null)
       null
     else
-      stringToCalendar(dbo.get(field).asInstanceOf[String])
+      dbo.get(field).asInstanceOf[DateTime]
   }
 
 }

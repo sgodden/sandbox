@@ -1,6 +1,5 @@
 package org.sgodden.tom.persistence.listener;
 
-import org.sgodden.tom.model.ValidationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
