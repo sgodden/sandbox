@@ -24,7 +24,7 @@ class CustomerOrder() extends ICustomerOrder {
   @NotNull
   var status: CustomerOrderStatus.Value = CustomerOrderStatus.NEW
   @NotNull
-  var bookingDate: LocalDate = new LocalDate(new Date().getTime)
+  var bookingDate: DateTime = new DateTime(new Date().getTime)
   var collectionDetails: CollectionDetails = null
   var deliveryDetails: DeliveryDetails = null
   val orderLines: MutableSet[CustomerOrderLine] = new HashSet[CustomerOrderLine]
@@ -73,7 +73,7 @@ class CustomerOrder() extends ICustomerOrder {
   }
 
   override def getBookingDate = bookingDate
-  override def setBookingDate(date: LocalDate) {
+  override def setBookingDate(date: DateTime) {
     this.bookingDate = date
   }
 
