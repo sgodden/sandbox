@@ -94,7 +94,7 @@ class CustomerOrdersController {
   }
   
   private def getErrors(e: ValidationException) =
-    e.getViolations.map(cv => new Error(cv.getPropertyPath.toString, cv.getMessage)).toSet
+    e.violations.map(cv => new Error(cv.getPropertyPath.toString, cv.getMessage)).toSet
 
   private def getRootCause(e: Throwable): Throwable = {
     if (e.getCause == null) e
