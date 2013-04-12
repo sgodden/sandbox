@@ -5,7 +5,7 @@ import org.springframework.test.context.ContextConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.testng.annotations.Test
 import org.slf4j.LoggerFactory
-import org.sgodden.tom.model.CustomerOrder
+import org.sgodden.tom.model.{CustomerOrderLine, CustomerOrder}
 
 @ContextConfiguration(locations = Array(
   "classpath:org/sgodden/tom/persistence/beans.xml",
@@ -25,6 +25,13 @@ class CustomerOrderRepositoryImplTest extends AbstractTestNGSpringContextTests {
 
     order.orderNumber = "ord001";
     order.customerReference = "cr001";
+
+    val line = new CustomerOrderLine(
+      packageType = "BOX",
+      descriptionOfGoods = "Stuff"
+    );
+
+    order.addOrderLine(line);
 
     repo persist order;
   }

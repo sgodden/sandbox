@@ -97,7 +97,7 @@ class CustomerOrder() extends ICustomerOrder {
     this.deliveryDetails = deliveryDetails.asInstanceOf[DeliveryDetails]
   }
 
-  override def getOrderLines: Set[ICustomerOrderLine] = orderLines.map(_.asInstanceOf[ICustomerOrderLine]).toSet
+  override def getOrderLines: Set[ICustomerOrderLine] = orderLines.toSet
   override def addOrderLine(line: ICustomerOrderLine) {
     orderLines.add(line.asInstanceOf[CustomerOrderLine])
   }

@@ -63,9 +63,6 @@ trait IAddress {
 }
 
 trait ICustomerOrderLine {
-  def getPackageType: String
-  def setPackageType(packageType: String)
-
-  def getDescriptionOfGoods: String
-  def setDescriptionOfGoods(descriptionOfGoods: String)
+  val packageType: String
+  val descriptionOfGoods: String
 }

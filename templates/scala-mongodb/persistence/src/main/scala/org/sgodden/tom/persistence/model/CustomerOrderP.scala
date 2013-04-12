@@ -2,13 +2,14 @@ package org.sgodden.tom.persistence.model
 
 import org.bson.types.ObjectId
 import org.joda.time.DateTime
-import org.sgodden.tom.model.{CustomerOrder, ICustomerOrder}
+import org.sgodden.tom.model.{ICustomerOrderLine, CustomerOrderLine, CustomerOrder, ICustomerOrder}
 
 case class CustomerOrderP(
     _id: ObjectId,
     customerReference: String, 
     orderNumber: String,
-    bookingDate: DateTime
+    bookingDate: DateTime,
+    orderLines: Set[ICustomerOrderLine]
                            ) {
   def asObject = {
     val ret = new CustomerOrder
@@ -26,6 +27,7 @@ object CustomerOrderP {
       _id = {if (order.getId != null) new ObjectId(order.getId) else null},
       customerReference = order.getCustomerReference,
       orderNumber = order.getOrderNumber,
-      bookingDate = order.getBookingDate)
+      bookingDate = order.getBookingDate,
+      orderLines = order.getOrderLines)
   }
 }
