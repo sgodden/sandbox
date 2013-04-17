@@ -72,26 +72,26 @@ object DeliveryDetailsAdapter {
 object AddressAdapter extends BaseAdapter {
   def apply(address: IAddress) = {
     MongoDBObject(
-      "line1" -> address.getLine1,
-      "line2" -> address.getLine2,
-      "line3" -> address.getLine3,
-      "line4" -> address.getLine4,
-      "town" -> address.getTown,
-      "postalCode" -> address.getPostalCode
+      "line1" -> address.line1,
+      "line2" -> address.line2,
+      "line3" -> address.line3,
+      "line4" -> address.line4,
+      "town" -> address.town,
+      "postalCode" -> address.postalCode
     )
   }
   def apply(dbo: DBObject) = {
     if (dbo == null)
       null
     else
-      new Address {
-        setLine1(getString(dbo, "line1"))
-        setLine2(getString(dbo, "line2"))
-        setLine3(getString(dbo, "line3"))
-        setLine4(getString(dbo, "line4"))
-        setTown(getString(dbo, "town"))
-        setPostalCode(getString(dbo, "postalCode"))
-      }
+      new Address(
+        line1 = getString(dbo, "line1"),
+        line2 = getString(dbo, "line2"),
+        line3 = getString(dbo, "line3"),
+        line4 = getString(dbo, "line4"),
+        town = getString(dbo, "town"),
+        postalCode = getString(dbo, "postalCode")
+      ) {}
   }
 }
 

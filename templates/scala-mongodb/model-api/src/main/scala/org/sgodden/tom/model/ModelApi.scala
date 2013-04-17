@@ -1,6 +1,7 @@
 package org.sgodden.tom.model
 
 import org.joda.time.{LocalDate, DateTime}
+import javax.validation.constraints.NotNull
 
 trait ICustomerOrder extends Identity[ICustomerOrder] {
 
@@ -43,23 +44,15 @@ trait IDeliveryDetails {
 }
 
 trait IAddress {
-  def getLine1: String
-  def setLine1(line1: String)
-
-  def getLine2: String
-  def setLine2(line2: String)
-
-  def getLine3: String
-  def setLine3(line3: String)
-
-  def getLine4: String
-  def setLine4(line4: String)
-
-  def getTown: String
-  def setTown(town: String)
-
-  def getPostalCode: String
-  def setPostalCode(postalCode: String)
+  @NotNull
+  val line1: String
+  @NotNull
+  val line2: String
+  val line3: String
+  val line4: String
+  @NotNull
+  val town: String
+  val postalCode: String
 }
 
 trait ICustomerOrderLine {
