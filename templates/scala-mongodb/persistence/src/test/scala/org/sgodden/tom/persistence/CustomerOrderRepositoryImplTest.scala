@@ -19,21 +19,29 @@ class CustomerOrderRepositoryImplTest extends AbstractTestNGSpringContextTests {
   val repo: CustomerOrderRepositoryImpl = null
 
   @Test
-  def testCreate {
-    LOG.info("ASDASD")
-    val order = new CustomerOrder();
+  def testCreateAndRetrieve {
+    LOG info "ASDASD"
+    var order = new CustomerOrder()
 
-    order.orderNumber = "ord001";
-    order.customerReference = "cr001";
+    order.orderNumber = "ord001"
+    order.customerReference = "cr001"
 
     val line = new CustomerOrderLine(
       packageType = "BOX",
       descriptionOfGoods = "Stuff"
     );
 
-    order.addOrderLine(line);
+    order.addOrderLine(line)
 
-    repo persist order;
+    repo persist order
+
+    LOG.info("ID: " + order.getId)
+
+    order = repo findById order.getId
+
+    LOG info order.orderNumber
+
+    order.getOrderLines.foreach(line => LOG info line.packageType)
   }
 
 }
