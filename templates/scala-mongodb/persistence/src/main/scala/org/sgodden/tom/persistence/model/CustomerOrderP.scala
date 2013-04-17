@@ -28,6 +28,11 @@ object CustomerOrderP {
       customerReference = order.getCustomerReference,
       orderNumber = order.getOrderNumber,
       bookingDate = order.getBookingDate,
-      orderLines = order.getOrderLines)
+
+      /*
+       * Relationships - ones that are already case classes require no conversion
+       */
+      orderLines = order.getOrderLines
+    )
   }
 }
