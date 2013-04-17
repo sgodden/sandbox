@@ -31,8 +31,6 @@ case class CustomerOrderP(
 
 object CustomerOrderP {
   def apply(order: ICustomerOrder) = {
-    val orderLineGrater = grater[CustomerOrderLine]
-
     new CustomerOrderP(
       _id = {if (order.getId != null) new ObjectId(order.getId) else null},
       customerReference = order.getCustomerReference,
