@@ -116,7 +116,7 @@ class BaseAdapter {
     if (dbo.get(field) == null)
       null
     else
-      dbo.get(field).asInstanceOf[DateTime]
+      dbo.get(field).asInstanceOf[LocalDate]
   }
 
 }

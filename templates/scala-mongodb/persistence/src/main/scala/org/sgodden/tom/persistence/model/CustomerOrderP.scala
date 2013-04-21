@@ -1,7 +1,7 @@
 package org.sgodden.tom.persistence.model
 
 import org.bson.types.ObjectId
-import org.joda.time.DateTime
+import org.joda.time.{LocalDate, DateTime}
 import org.sgodden.tom.model.{ICustomerOrderLine, CustomerOrderLine, CustomerOrder, ICustomerOrder}
 import com.mongodb.DBObject
 import scala.collection.mutable
@@ -21,7 +21,7 @@ case class CustomerOrderP(
     ret.setId(_id.toString)
     ret.setCustomerReference(customerReference)
     ret.setOrderNumber(orderNumber)
-    ret.setBookingDate(bookingDate)
+    ret.setBookingDate(new LocalDate(bookingDate.getMillis))
     orderLines.foreach(line => {
       ret.addOrderLine(line)
     })
@@ -35,7 +35,8 @@ object CustomerOrderP {
       _id = {if (order.getId != null) new ObjectId(order.getId) else null},
       customerReference = order.getCustomerReference,
       orderNumber = order.getOrderNumber,
-      bookingDate = order.getBookingDate,
+      // fudge it to a date time as that's what is persisted
+      bookingDate = new DateTime(order.getBookingDate.toDateMidnight.getMillis),
 
       /*
        * Relationships - ones that are already case classes just need casting to the concrete class

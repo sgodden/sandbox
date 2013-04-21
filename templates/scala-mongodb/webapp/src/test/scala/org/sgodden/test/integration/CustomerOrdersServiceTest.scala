@@ -11,7 +11,7 @@ import java.io.{InputStreamReader, BufferedReader}
 import org.testng.annotations.Test
 import org.slf4j.LoggerFactory
 import org.sgodden.tom.web.{ListEntry, ListResponse}
-import org.joda.time.DateTime
+import org.joda.time.{LocalDate, DateTime}
 
 @Test(groups = Array("integration"))
 class CustomerOrdersServiceTest {
@@ -31,7 +31,7 @@ class CustomerOrdersServiceTest {
       id = null,
       customerReference = "cr001",
       orderNumber = "ORD001",
-      bookingDate = new DateTime)
+      bookingDate = new LocalDate)
 
     val response = postOrder(order)
     printErrorsIfExist(response)
@@ -47,7 +47,7 @@ class CustomerOrdersServiceTest {
       id = null,
       customerReference = "CREF001",
       orderNumber = "ORD001",
-      bookingDate = new DateTime)
+      bookingDate = new LocalDate)
 
     val response = postOrder(order)
     Assert.assertFalse(response.success)

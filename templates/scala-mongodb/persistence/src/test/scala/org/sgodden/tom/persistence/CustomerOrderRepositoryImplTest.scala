@@ -41,6 +41,8 @@ class CustomerOrderRepositoryImplTest extends AbstractTestNGSpringContextTests {
 
     LOG info order.orderNumber
 
+    LOG info order.bookingDate.toString
+
     order.getOrderLines.foreach(line => LOG info line.packageType)
   }
 

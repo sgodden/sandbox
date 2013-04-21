@@ -11,8 +11,8 @@ trait ICustomerOrder extends Identity[ICustomerOrder] {
 
   def ship
 
-  def getBookingDate: DateTime
-  def setBookingDate(cal: DateTime)
+  def getBookingDate: LocalDate
+  def setBookingDate(cal: LocalDate)
 
   def getCustomerReference: String
   def setCustomerReference(reference: String)

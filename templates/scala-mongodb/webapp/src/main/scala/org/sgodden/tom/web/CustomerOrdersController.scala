@@ -5,7 +5,7 @@ import org.codehaus.jackson.map.{SerializationConfig, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.sgodden.tom.model.{ICustomerOrder, ValidationException}
 import org.sgodden.tom.services.customerorder.CustomerOrderService
-import org.joda.time.DateTime
+import org.joda.time.{LocalDate, DateTime}
 import org.springframework.stereotype.Component
 import javax.ws.rs._
 import core.Response
@@ -116,7 +116,7 @@ case class ListEntry(
                     id: String,
                     customerReference: String,
                     orderNumber: String,
-                    bookingDate: DateTime) {
+                    bookingDate: LocalDate) {
   def merge(order: ICustomerOrder) {
     order.setOrderNumber(orderNumber)
     order.setCustomerReference(customerReference)
