@@ -44,7 +44,6 @@ object CustomerOrderP {
       _id = {if (order.getId != null) new ObjectId(order.getId) else null},
       customerReference = order.getCustomerReference,
       orderNumber = order.getOrderNumber,
-      // fudge it to a date time as that's what is persisted
       bookingDate = order.getBookingDate,
 
       /*
