@@ -21,7 +21,7 @@ class CustomerOrderRepositoryImplTest extends AbstractTestNGSpringContextTests {
   @Test
   def testCreateAndRetrieve {
     LOG info "ASDASD"
-    var order = new CustomerOrder()
+    var order = new CustomerOrder
 
     order.orderNumber = "ord001"
     order.customerReference = "cr001"
