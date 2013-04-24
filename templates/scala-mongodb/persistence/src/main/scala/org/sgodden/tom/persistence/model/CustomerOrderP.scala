@@ -1,7 +1,7 @@
 package org.sgodden.tom.persistence.model
 
 import org.bson.types.ObjectId
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.{DateTimeZone, LocalDate, DateTime}
 import org.sgodden.tom.model.{ICustomerOrderLine, CustomerOrderLine, CustomerOrder, ICustomerOrder}
 import com.mongodb.DBObject
 import scala.collection.mutable
@@ -36,7 +36,7 @@ case class CustomerOrderP(
 object CustomerOrderP {
 
   implicit def localDateToDateTime(localDate: LocalDate) = {
-    new DateTime(localDate.toDateMidnight.getMillis)
+    new DateTime(localDate.toDateTimeAtStartOfDay(DateTimeZone.forID("ETC/Utc")).getMillis)
   }
 
   def apply(order: ICustomerOrder) = {
