@@ -11,18 +11,18 @@ import java.io.{InputStreamReader, BufferedReader}
 import org.testng.annotations.Test
 import org.slf4j.LoggerFactory
 import org.sgodden.tom.web.{ListEntry, ListResponse}
-import org.joda.time.{LocalDate, DateTime}
+import org.joda.time.LocalDate
 
 @Test(groups = Array("integration"))
-class CustomerOrdersServiceTest {
+class CustomerOrdersServiceIT {
 
-  private def LOG = LoggerFactory.getLogger(classOf[CustomerOrdersServiceTest])
+  private def LOG = LoggerFactory.getLogger(classOf[CustomerOrdersServiceIT])
 
-  private val baseUri = "http://localhost:8080/webapp/services/customerOrders"
+  private val baseUri = "http://localhost:8080/services/customer-orders"
 
   @Test(priority = 1)
   def shouldBeNoOrders: Unit = {
-    Assert.assertEquals(listOrders.customerOrders.size, 0)
+    Assert.assertEquals(listOrders.size, 0)
   }
 
   @Test(priority = 2)
@@ -72,9 +72,10 @@ class CustomerOrdersServiceTest {
     objectMapper.reader(classOf[ListResponse]).readValue(getResponseString(response.getEntity))
   }
 
-  private def listOrders: ListResponse = {
+  private def listOrders: Array[ListEntry] = {
     val ordersString = getListOrdersResponse
-    objectMapper.reader(classOf[ListResponse]).readValue(ordersString)
+    val ret: Array[ListEntry] = objectMapper.reader(classOf[Array[ListEntry]]).readValue(ordersString)
+    ret
   }
 
   private def objectMapper: ObjectMapper = {
@@ -113,5 +114,7 @@ class CustomerOrdersServiceTest {
                                  message: String): Boolean = {
     errors.filter(error => path == error.path && message == error.message).size > 0
   }
+
+
 
 }

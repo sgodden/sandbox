@@ -3,12 +3,13 @@ package org.sgodden.tom.web
 import org.springframework.beans.factory.annotation.Autowired
 import org.codehaus.jackson.map.{SerializationConfig, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.sgodden.tom.model.{ICustomerOrder, ValidationException}
+import org.sgodden.tom.model.{ICustomerOrderLine, ICustomerOrder, ValidationException}
 import org.sgodden.tom.services.customerorder.CustomerOrderService
 import org.joda.time.{LocalDate, DateTime}
 import org.springframework.stereotype.Component
 import javax.ws.rs._
 import core.Response
+import scala.collection.mutable
 
 @Component
 @Produces(Array("application/json"))
@@ -17,12 +18,24 @@ class CustomerOrdersController {
   @Autowired
   private val service: CustomerOrderService = null
 
+  implicit def orderLineToOrderLine(orderLine: ICustomerOrderLine): OrderLine = {
+    new OrderLine (
+      packageType = orderLine.packageType,
+      descriptionOfGoods = orderLine.descriptionOfGoods
+    )
+  }
+
+  implicit def orderLinesToOrderLines(orderLines: Set[ICustomerOrderLine]): Array[OrderLine] = {
+    {for (v <- orderLines) yield orderLineToOrderLine(v)}.toArray
+  }
+
   implicit def orderToListEntry(order: ICustomerOrder): ListEntry = {
     new ListEntry (
       id = order.getId,
       customerReference = order.getCustomerReference,
       orderNumber = order.getOrderNumber,
-      bookingDate = order.getBookingDate
+      bookingDate = order.getBookingDate,
+      orderLines = order.getOrderLines
     )
   }
 
@@ -116,13 +129,17 @@ case class ListEntry(
                     id: String,
                     customerReference: String,
                     orderNumber: String,
-                    bookingDate: LocalDate) {
+                    bookingDate: LocalDate,
+                    orderLines: Array[OrderLine] = Array()) {
   def merge(order: ICustomerOrder) {
     order.setOrderNumber(orderNumber)
     order.setCustomerReference(customerReference)
     order.setBookingDate(bookingDate)
   }
 }
+
+case class OrderLine(packageType: String,
+                    descriptionOfGoods: String)
 
 case class ListResponse ( success: Boolean = true,
                     errors: Set[Error],
