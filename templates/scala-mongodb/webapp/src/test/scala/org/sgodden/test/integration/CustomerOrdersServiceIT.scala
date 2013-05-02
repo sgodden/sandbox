@@ -14,6 +14,9 @@ import org.sgodden.tom.web.{BaseResponse, PostResponse, ListEntry, GetResponse}
 import org.joda.time.LocalDate
 import com.mongodb.casbah.commons.conversions.scala.{RegisterJodaTimeConversionHelpers, RegisterConversionHelpers}
 
+/**
+ * Tests that basic CRUD operations are working over the REST interface.
+ */
 @Test
 class CustomerOrdersServiceIT {
 
