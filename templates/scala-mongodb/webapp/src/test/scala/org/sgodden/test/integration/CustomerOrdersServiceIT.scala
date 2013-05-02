@@ -8,20 +8,25 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.http.client.methods.{HttpGet, HttpPost}
 import org.apache.http.{HttpEntity, HttpResponse}
 import java.io.{InputStreamReader, BufferedReader}
-import org.testng.annotations.Test
+import org.testng.annotations.{BeforeClass, Test}
 import org.slf4j.LoggerFactory
-import org.sgodden.tom.web.{ListEntry, ListResponse}
+import org.sgodden.tom.web.{BaseResponse, PostResponse, ListEntry, GetResponse}
 import org.joda.time.LocalDate
+import com.mongodb.casbah.commons.conversions.scala.{RegisterJodaTimeConversionHelpers, RegisterConversionHelpers}
 
-@Test(groups = Array("integration"))
+@Test
 class CustomerOrdersServiceIT {
 
   private def LOG = LoggerFactory.getLogger(classOf[CustomerOrdersServiceIT])
 
   private val baseUri = "http://localhost:8080/services/customer-orders"
 
+  RegisterConversionHelpers()
+  RegisterJodaTimeConversionHelpers()
+
   @Test(priority = 1)
   def shouldBeNoOrders: Unit = {
+    IntegrationTestHelper.dropDB
     Assert.assertEquals(listOrders.size, 0)
   }
 
@@ -37,7 +42,7 @@ class CustomerOrdersServiceIT {
     printErrorsIfExist(response)
     Assert.assertTrue(response.success)
 
-    val returned = response.customerOrders.head
+    val returned = response.customerOrder
     Assert.assertNotNull(returned)
   }
 
@@ -54,23 +59,26 @@ class CustomerOrdersServiceIT {
     Assert.assertTrue(containsError(response.errors, "customerReference", "Customer reference must begin with 'cr'"))
   }
   
-  private def printErrorsIfExist(response: ListResponse) {
+  private def printErrorsIfExist(response: BaseResponse) {
     if (!response.success) println(response.errors.head.message)
   }
 
-  private def postOrder(order: ListEntry): ListResponse = {
+  private def postOrder(order: ListEntry): PostResponse = {
     val client = new DefaultHttpClient
     val post = new HttpPost(baseUri) {
       setEntity(new StringEntity(objectMapper.writeValueAsString(order)) {
         setContentType("application/json")
       })
     }
-    toListOrdersResponse(client.execute(post))
+    toPostResponse(client.execute(post))
   }
   
-  private def toListOrdersResponse(response: HttpResponse): ListResponse = {
-    objectMapper.reader(classOf[ListResponse]).readValue(getResponseString(response.getEntity))
+  private def toListOrdersResponse(response: HttpResponse): GetResponse = {
+    objectMapper.reader(classOf[GetResponse]).readValue(getResponseString(response.getEntity))
   }
+
+  private def toPostResponse(response: HttpResponse): PostResponse =
+    objectMapper.reader(classOf[PostResponse]).readValue(getResponseString(response.getEntity))
 
   private def listOrders: Array[ListEntry] = {
     val ordersString = getListOrdersResponse
@@ -109,7 +117,7 @@ class CustomerOrdersServiceIT {
 
 
   private def containsError(
-                                 errors: Set[org.sgodden.tom.web.Error],
+                                 errors: Array[org.sgodden.tom.web.Error],
                                  path: String,
                                  message: String): Boolean = {
     errors.filter(error => path == error.path && message == error.message).size > 0

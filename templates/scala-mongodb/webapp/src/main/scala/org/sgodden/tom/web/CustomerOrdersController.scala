@@ -53,18 +53,15 @@ class CustomerOrdersController {
   @Path("/{id}")
   def delete(@PathParam("id") id: String) {
     service.remove(id)
-    println("DELETE: " + id)
   }
 
   @PUT
   def put(entryString: String) = {
-    println("PUT: " + entryString)
     saveOrUpdate(entryString)
   }
 
   @POST
   def post(entryString: String) = {
-    println("POST: " + entryString)
     saveOrUpdate(entryString)
   }
 
@@ -77,7 +74,6 @@ class CustomerOrdersController {
 
     try {
       var id = entry.id
-      println("id is: " + id)
       if (id == null || id == "") {
         val order = service.create
         entry merge order
@@ -88,14 +84,14 @@ class CustomerOrdersController {
         service merge order
       }
       responseOrder = service findById id
-      responseEntity = generate(responseOrder)
+      responseEntity = generate(new PostResponse(success = true, customerOrder = responseOrder))
     }
     catch {
       case ve: ValidationException => {
         success = false
         responseOrder = entry
         errors = getErrors(ve)
-        responseEntity = generate(errors)
+        responseEntity = generate(new PostResponse(success = false, errors = errors.toArray))
         return Response.status(Response.Status.BAD_REQUEST).entity(responseEntity).build()
       }
       case e: Exception => {
@@ -141,10 +137,18 @@ case class ListEntry(
 case class OrderLine(packageType: String,
                     descriptionOfGoods: String)
 
-case class ListResponse ( success: Boolean = true,
-                    errors: Set[Error],
-                    customerOrders: Set[ListEntry]) {
+abstract class BaseResponse() {
+  def success: Boolean
+  def errors: Array[Error]
+}
+
+case class GetResponse (success: Boolean, errors: Array[Error] = null, customerOrders: Array[ListEntry] = null) extends BaseResponse {
   def total = customerOrders.size
+}
+
+case class PostResponse ( success: Boolean,
+                    errors: Array[Error] = null,
+                    customerOrder: ListEntry = null) extends BaseResponse {
 }
 
 case class Error(path: String,  message:String)
