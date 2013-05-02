@@ -25,13 +25,13 @@ class CustomerOrdersServiceIT {
   RegisterJodaTimeConversionHelpers()
 
   @Test(priority = 1)
-  def shouldBeNoOrders: Unit = {
+  def shouldBeNoOrders {
     IntegrationTestHelper.dropDB
     Assert.assertEquals(listOrders.size, 0)
   }
 
   @Test(priority = 2)
-  def testCreateOrder: Unit = {
+  def canCreateOrder {
     val order = new ListEntry(
       id = null,
       customerReference = "cr001",
@@ -47,7 +47,7 @@ class CustomerOrdersServiceIT {
   }
 
   @Test(priority = 2)
-  def customerReferenceMustBeginWithCrOnCreate: Unit = {
+  def violationsCauseErrors {
     val order = new ListEntry(
       id = null,
       customerReference = "CREF001",
