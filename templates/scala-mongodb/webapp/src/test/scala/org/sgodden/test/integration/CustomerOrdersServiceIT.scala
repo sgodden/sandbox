@@ -64,6 +64,14 @@ class CustomerOrdersServiceIT {
     Assert.assertEquals(listOrders.size, 1)
   }
 
+  @Test(priority = 4)
+  def canUpdateAnOrder {
+    val order = listOrders.head
+    val newOrder = order.copy(orderNumber = order.orderNumber + "XXX")
+    Assert.assertTrue(putOrder(newOrder).success)
+    Assert.assertEquals(listOrders.head.orderNumber, newOrder.orderNumber)
+  }
+
   private def printErrorsIfExist(response: BaseResponse) {
     if (!response.success) println(response.errors.head.message)
   }
@@ -77,7 +85,17 @@ class CustomerOrdersServiceIT {
     }
     toPostResponse(client.execute(post))
   }
-  
+
+  private def putOrder(order: ListEntry): PostResponse = {
+    val client = new DefaultHttpClient
+    val post = new HttpPost(baseUri) {
+      setEntity(new StringEntity(objectMapper.writeValueAsString(order)) {
+        setContentType("application/json")
+      })
+    }
+    toPostResponse(client.execute(post))
+  }
+
   private def toListOrdersResponse(response: HttpResponse): GetResponse = {
     objectMapper.reader(classOf[GetResponse]).readValue(getResponseString(response.getEntity))
   }
