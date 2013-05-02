@@ -58,7 +58,12 @@ class CustomerOrdersServiceIT {
     Assert.assertFalse(response.success)
     Assert.assertTrue(containsError(response.errors, "customerReference", "Customer reference must begin with 'cr'"))
   }
-  
+
+  @Test(priority = 3)
+  def shouldBeOneOrder {
+    Assert.assertEquals(listOrders.size, 1)
+  }
+
   private def printErrorsIfExist(response: BaseResponse) {
     if (!response.success) println(response.errors.head.message)
   }
