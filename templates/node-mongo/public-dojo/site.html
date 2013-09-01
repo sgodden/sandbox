@@ -31,8 +31,12 @@
 				style: {
 					height: "100%"
 				}
-			}).placeAt("body");
+			}).placeAt(document.body);
+			container.startup();
 			AppController.start();
+			setTimeout(function() {
+				container.resize();
+			});
 		});
 
 	</script>

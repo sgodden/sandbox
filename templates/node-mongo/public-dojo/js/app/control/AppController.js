@@ -33,7 +33,9 @@ define([
             router.startup();
 
             if (!hash()) {
-                router.go("/orders");
+				setTimeout(function() {
+                	router.go("/orders");
+				});
             }
         },
 
@@ -44,7 +46,6 @@ define([
                 this._currentController.destroy();
             }
             this._currentController = newController;
-            put(newController.domNode, ".full-height");
             this._appContainer.addChild(this._currentController);
             this._currentController.startup();
         }

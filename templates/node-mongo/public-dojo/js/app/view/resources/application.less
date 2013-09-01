@@ -1,17 +1,44 @@
-@import "../../../../js-lib/dgrid/css/dgrid.css";
-@import "../../../../js-lib/dgrid/css/skins/claro.css";
-@import "../../../../js-lib/dijit/themes/claro/claro.css";
 @import "./CustomerOrderEditForm";
+
+html, body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+}
 
 .full-height {
   position: relative;
   height: 100%;
 }
 
-.dgrid {
-  height: 15em;
-//  .dgrid-scroller {
-//    position: relative;
-//    overflow: visible;
-//  }
+.controller {
+	height: 100%;
+}
+
+.customer-order-list-view {
+	height: 100%;
+}
+
+div.dgrid {
+	height: 100%;
+
+	div.dgrid-row {
+		td:first-child {
+			border-left: none;
+		}
+		td:last-child {
+			border-right: none;
+		}
+	}
+
+	div.dgrid-header-row {
+		th:first-child {
+			border-left: none;
+		}
+		th:last-child {
+			border-right: none;
+		}
+	}
 }

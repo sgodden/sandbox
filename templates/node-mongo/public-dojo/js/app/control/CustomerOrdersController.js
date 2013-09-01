@@ -6,11 +6,15 @@ define([
     "dojo/router"
 ], function (declare, ContentPane, CustomerOrdersListView, CustomerOrdersModel, router) {
 
-    return declare([ContentPane], {
+    return declare("app.control.CustomerOrdersController", [ContentPane], {
+
         _view: null,
+
+		class: 'controller',
 
         postCreate: function () {
             this.inherited(arguments);
+			this.containerNode = this.domNode;
 
             this._view = new CustomerOrdersListView({
                 store: new CustomerOrdersModel()
@@ -22,6 +26,10 @@ define([
 
             this.set("content", this._view);
         },
+
+		resize: function() {
+			this.inherited(arguments);
+		},
 
         startup: function () {
             this.inherited(arguments);
