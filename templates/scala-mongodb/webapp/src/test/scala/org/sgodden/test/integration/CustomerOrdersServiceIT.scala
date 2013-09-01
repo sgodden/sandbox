@@ -5,7 +5,7 @@ import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.entity.StringEntity
 import org.codehaus.jackson.map.{SerializationConfig, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
-import org.apache.http.client.methods.{HttpGet, HttpPost}
+import org.apache.http.client.methods.{HttpDelete, HttpPut, HttpGet, HttpPost}
 import org.apache.http.{HttpEntity, HttpResponse}
 import java.io.{InputStreamReader, BufferedReader}
 import org.testng.annotations.{BeforeClass, Test}
@@ -19,8 +19,6 @@ import com.mongodb.casbah.commons.conversions.scala.{RegisterJodaTimeConversionH
  */
 @Test
 class CustomerOrdersServiceIT {
-
-  private def LOG = LoggerFactory.getLogger(classOf[CustomerOrdersServiceIT])
 
   private val baseUri = "http://localhost:8080/services/customer-orders"
 
@@ -47,6 +45,8 @@ class CustomerOrdersServiceIT {
 
     val returned = response.customerOrder
     Assert.assertNotNull(returned)
+
+    Assert.assertEquals(listOrders.size, 1)
   }
 
   @Test(priority = 2)
@@ -63,16 +63,18 @@ class CustomerOrdersServiceIT {
   }
 
   @Test(priority = 3)
-  def shouldBeOneOrder {
-    Assert.assertEquals(listOrders.size, 1)
-  }
-
-  @Test(priority = 4)
   def canUpdateAnOrder {
     val order = listOrders.head
     val newOrder = order.copy(orderNumber = order.orderNumber + "XXX")
     Assert.assertTrue(putOrder(newOrder).success)
     Assert.assertEquals(listOrders.head.orderNumber, newOrder.orderNumber)
+  }
+
+  @Test(priority = 4)
+  def canDeleteOrder {
+    val order = listOrders.head
+    deleteOrder(order.id)
+    Assert.assertEquals(listOrders.size, 0)
   }
 
   private def printErrorsIfExist(response: BaseResponse) {
@@ -81,22 +83,28 @@ class CustomerOrdersServiceIT {
 
   private def postOrder(order: ListEntry): PostResponse = {
     val client = new DefaultHttpClient
-    val post = new HttpPost(baseUri) {
+    val request = new HttpPost(baseUri) {
       setEntity(new StringEntity(objectMapper.writeValueAsString(order)) {
         setContentType("application/json")
       })
     }
-    toPostResponse(client.execute(post))
+    toPostResponse(client.execute(request))
   }
 
   private def putOrder(order: ListEntry): PostResponse = {
     val client = new DefaultHttpClient
-    val post = new HttpPost(baseUri) {
+    val request = new HttpPut(baseUri) {
       setEntity(new StringEntity(objectMapper.writeValueAsString(order)) {
         setContentType("application/json")
       })
     }
-    toPostResponse(client.execute(post))
+    toPostResponse(client.execute(request))
+  }
+
+  private def deleteOrder(id: String) {
+    val client = new DefaultHttpClient
+    val request = new HttpDelete(baseUri + "/" + id)
+    client.execute(request)
   }
 
   private def toListOrdersResponse(response: HttpResponse): GetResponse = {
