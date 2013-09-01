@@ -10,8 +10,6 @@ define([
     "dojo/on",
 	"dijit/layout/_ContentPaneResizeMixin",
 
-    "dijit/form/Form",
-    "dijit/form/ValidationTextBox",
     "dijit/form/Button",
     "dijit/layout/BorderContainer",
     "dijit/layout/ContentPane"
