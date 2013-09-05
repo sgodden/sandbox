@@ -11,7 +11,7 @@ define([
 
     return {
         _appContainer: null,
-        _currentController: null,
+        _currentView: null,
 
         start: function() {
             this._appContainer = registry.byId("appContainer");
@@ -40,14 +40,16 @@ define([
         },
 
         _switchController: function(newController) {
-            newController.region = "center";
-            if (this._currentController) {
-                this._appContainer.removeChild(this._currentController)
-                this._currentController.destroy();
-            }
-            this._currentController = newController;
-            this._appContainer.addChild(this._currentController);
-            this._currentController.startup();
+            newController.getView().then(lang.hitch(this, function(view) {
+				view.region = 'center';
+				if (this._currentView) {
+					this._appContainer.removeChild(this._currentView);
+					this._currentView.destroy();
+				}
+				this._currentView = view;
+				this._appContainer.addChild(this._currentView);
+				this._currentView.startup();
+			}));
         }
     }
 

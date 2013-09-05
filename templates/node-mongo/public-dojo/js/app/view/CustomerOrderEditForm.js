@@ -7,12 +7,15 @@ define([
     "dojo/text!./resources/CustomerOrderEditForm.html",
     "dojox/mvc/at",
 	"dojo/on",
+	"dojo/_base/event",
+	"dojo/Evented",
 
     "dijit/form/Form",
     "dijit/form/ValidationTextBox",
     "dijit/form/DateTextBox",
-    "dijit/form/Button"
-], function (declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplatedMixin, template, at, on) {
+    "dijit/form/Button",
+	"dijit/form/FilteringSelect"
+], function (declare, lang, _WidgetBase, _TemplatedMixin, _WidgetsInTemplatedMixin, template, at, on, event, Evented) {
     return declare([_WidgetBase, _TemplatedMixin, _WidgetsInTemplatedMixin], {
         model: null,
 
@@ -30,9 +33,11 @@ define([
             this.dapCustomerReference.set("value", at(this.model, "customerReference"));
             this.dapOrderNumber.set("value", at(this.model, "orderNumber"));
             this.dapBookingDate.set("value", at(this.model, "bookingDate"));
-			this.own(on(this.dapForm, "submit", lang.hitch(this, function() {
+			this.own(on(this.dapForm, "submit", lang.hitch(this, function(evt) {
+				event.stop(evt);
 				// focus the button so that the mvc bindings are updated
 				this.dapSubmitButton.focus();
+				this.emit('submit', { model: this.model });
 			})));
         },
 

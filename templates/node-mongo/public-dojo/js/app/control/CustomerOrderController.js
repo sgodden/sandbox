@@ -2,12 +2,12 @@ define([
     "dojo/_base/declare",
     "dojo/_base/lang",
     "dojo/router",
-    "dijit/layout/ContentPane",
     "../model/CustomerOrdersModel",
-    "../view/CustomerOrderEditForm"
-], function (declare, lang, router, ContentPane, CustomerOrdersModel, CustomerOrderEditForm) {
+    "../view/CustomerOrderEditForm",
+	"dojo/Deferred"
+], function (declare, lang, router, CustomerOrdersModel, CustomerOrderEditForm, Deferred) {
 
-    return declare([ContentPane], {
+    return declare([], {
 
         id: "customerOrderEditForm",
 
@@ -15,32 +15,43 @@ define([
 
         _model: null,
 
-        postCreate: function () {
-            this.inherited(arguments);
+		constructor: function(args) {
+			lang.mixin(this, args);
+		},
+
+        getView: function () {
+			var d = new Deferred();
+
             if (this.objectId) {
-                new CustomerOrdersModel().get(this.objectId).then(lang.hitch(this, "_configureView"));
+                new CustomerOrdersModel().get(this.objectId).then(
+					lang.hitch(this, function(order) {
+						d.resolve(this._configureView(order));
+					}),
+					d.reject
+				);
             } else {
-                this._configureView({
-                    id: undefined,
-                    orderNumber: null,
-                    customerReference: null
-                });
+				d.resolve(this._configureView({
+					id: undefined,
+					orderNumber: null,
+					customerReference: null
+				}));
             }
+
+			return d.promise;
         },
 
         _configureView: function(order) {
-            var view = new CustomerOrderEditForm({model: order});
-            this._model = order;
-            view.on("submit", lang.hitch(this, "_submit"));
-            this.set("content", view);
+			return new CustomerOrderEditForm({
+				model: order,
+				onsubmit: lang.hitch(this, "_submit")
+			});
         },
 
-        _submit: function(e) {
-			var method = this._model.id ? "put" : "add";
-			this._model._csrf = dojo.cookie("_csrf");
-            e.preventDefault();
+        _submit: function(data) {
+			var model = data.model, method = model.id ? "put" : "add";
+			model._csrf = dojo.cookie("_csrf");
             // TODO - handling of server side errors
-            new CustomerOrdersModel()[method](this._model).then(
+            new CustomerOrdersModel()[method](model).then(
                 function(){
                     router.go("/orders");
                 },
