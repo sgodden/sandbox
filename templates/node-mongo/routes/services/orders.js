@@ -33,10 +33,7 @@ exports.list = function(req, res){
 };
 
 exports.get = function(req, res) {
-	var query = {
-		id: req.params.id
-	};
-	repo.findOne(query).then(function(order) {
+	repo.findOne({ id: req.params.id }).then(function(order) {
 		res.send(order);
 	});
 };
