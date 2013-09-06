@@ -14,6 +14,9 @@ exports.list = function(req, res){
         });
     };
 
+	repo.foo = "bar";
+	console.log(repo.foo);
+
     repo.count().then(function(count){
         if (count === 0) {
             console.log('There are no orders - inserting some');
