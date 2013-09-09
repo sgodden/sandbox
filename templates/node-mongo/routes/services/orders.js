@@ -4,7 +4,6 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
 	CustomerOrder = require('../../model/CustomerOrder').CustomerOrder,
 	_ = require("underscore"),
 	djRequire = require("dojo-node"),
-	lang = djRequire("dojo/_base/lang"),
     repo = new CustomerOrderRepository();
 
 exports.list = function(req, res){
