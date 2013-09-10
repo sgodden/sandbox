@@ -11,7 +11,7 @@ ObjectValidator.prototype.validate = function (object) {
 			if (!object.hasOwnProperty(property) || object[property] === null) {
 				violations.push({
 					path: property,
-					message: "Property ${prop} is required".replace("${prop}", property)
+					type: 'required'
 				});
 			}
 		}
