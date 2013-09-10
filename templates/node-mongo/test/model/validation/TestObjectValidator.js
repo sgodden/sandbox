@@ -16,14 +16,14 @@ describe("ObjectValidator", function() {
 						}
 					]
 				},
-				constraints = new ObjectValidator().validate(object);
-			assert.equal(1, constraints.length);
+				violations = new ObjectValidator().validate(object);
+			assert.equal(1, violations.length);
 		});
 
 		it("should return an empty array if no violations", function() {
 			var object = {},
-				constraints = new ObjectValidator().validate(object);
-			assert.equal(0, constraints.length);
+				violations = new ObjectValidator().validate(object);
+			assert.equal(0, violations.length);
 		});
 
 	});

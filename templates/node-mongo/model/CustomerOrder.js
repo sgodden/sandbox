@@ -1,6 +1,7 @@
 "use strict";
 
-var CustomerOrder;
+var CustomerOrder,
+	ObjectValidator = require("./validation/ObjectValidator").ObjectValidator;
 
 /**
  * @class CustomerOrder.
@@ -70,6 +71,10 @@ CustomerOrder = function(args) {
 			}
 		}
 	}
+};
+
+CustomerOrder.prototype.validate = function () {
+	return new ObjectValidator().validate(this);
 };
 
 /**

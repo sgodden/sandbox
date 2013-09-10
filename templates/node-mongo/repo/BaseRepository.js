@@ -133,13 +133,21 @@ BaseRepository.prototype.updateById = function(object) {
 	// we don't want to store the id twice for no purpose
 	delete clone.id;
 	return this.execCollection(function (coll, d) {
-		coll.update(query, clone, function (err) {
-			if (err) {
-				throw new Error(err);
-			} else {
-				d.resolve();
-			}
-		});
+		var violations = [];
+		if (object.validate) {
+			violations = object.validate();
+		}
+		if (violations.length) {
+			d.reject(violations);
+		} else {
+			coll.update(query, clone, function (err) {
+				if (err) {
+					throw new Error(err);
+				} else {
+					d.resolve();
+				}
+			});
+		}
 	});
 };
 

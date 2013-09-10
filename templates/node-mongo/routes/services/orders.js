@@ -45,9 +45,15 @@ exports.put = function(req, res) {
 	if (dto.bookingDate) {
 		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
 	}
-	repo.updateById(dto).then(function() {
-		res.send({ status: "ok" });
-	});
+	repo.updateById(dto).then(
+		function() {
+			res.send({ status: "ok" });
+		},
+		function(violations) {
+			res.responseCode = 401;
+			res.send(violations);
+		}
+	);
 };
 
 exports.post = function(req, res) {
