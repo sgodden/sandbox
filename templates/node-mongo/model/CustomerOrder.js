@@ -80,6 +80,10 @@ CustomerOrder.prototype.constraints = [
 	{
 		property: 'orderNumber',
 		required: true
+	},
+	{
+		property: 'customerReference',
+		required: true
 	}
 ];
 
