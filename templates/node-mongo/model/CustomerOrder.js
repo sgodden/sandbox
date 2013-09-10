@@ -73,6 +73,17 @@ CustomerOrder = function(args) {
 };
 
 /**
+ * Validation constraints for customer orders.
+ * @type {Array}
+ */
+CustomerOrder.prototype.constraints = [
+	{
+		property: 'orderNumber',
+		required: true
+	}
+];
+
+/**
  * @function
  * @param {Object} item the item loaded from the persistent store.
  * @description hydrates an instance of CustomerOrder from persistent data.
