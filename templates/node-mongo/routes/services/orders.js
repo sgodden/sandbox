@@ -4,7 +4,20 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
 	CustomerOrder = require('../../model/CustomerOrder').CustomerOrder,
 	_ = require("underscore"),
 	djRequire = require("dojo-node"),
+	lang = djRequire("dojo/_base/lang"),
     repo = new CustomerOrderRepository();
+
+function cleanObject(object) {
+	var key, value;
+	for (key in object) {
+		if (object.hasOwnProperty(key)) {
+			value = object[key];
+			if (typeof value === "string" && value.length === 0) {
+				object[key] = null;
+			}
+		}
+	}
+}
 
 exports.list = function(req, res){
     var doList = function() {
@@ -42,16 +55,17 @@ exports.get = function(req, res) {
 
 exports.put = function(req, res) {
 	var dto = req.body;
+	cleanObject(dto);
 	if (dto.bookingDate) {
 		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
 	}
-	repo.updateById(dto).then(
+
+	repo.updateById(new CustomerOrder(dto)).then(
 		function() {
 			res.send({ status: "ok" });
 		},
 		function(violations) {
-			res.responseCode = 401;
-			res.send(violations);
+			res.status(400).send({ violations: violations });
 		}
 	);
 };

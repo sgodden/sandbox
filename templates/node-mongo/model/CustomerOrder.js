@@ -1,7 +1,9 @@
 "use strict";
 
 var CustomerOrder,
-	ObjectValidator = require("./validation/ObjectValidator").ObjectValidator;
+	ObjectValidator = require("./validation/ObjectValidator").ObjectValidator,
+	djRequire = require("dojo-node"),
+	lang = djRequire("dojo/_base/lang");
 
 /**
  * @class CustomerOrder.
@@ -60,17 +62,12 @@ CustomerOrder = function(args) {
         }
     });
 
+	lang.mixin(this, args);
+
     // Oh yeahhhh!!!!  Javascript is really rocking these days.
     // Now nobody can bugger about with us, defining new properties etc.
     Object.seal(this);
 
-	if (args) {
-		for (var key in args) {
-			if (args.hasOwnProperty(key)) {
-				this[key] = args[key];
-			}
-		}
-	}
 };
 
 CustomerOrder.prototype.validate = function () {
