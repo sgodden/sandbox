@@ -17,6 +17,23 @@ function cleanObject(object) {
 			}
 		}
 	}
+	if (object.bookingDate) {
+		object.bookingDate = new Date(object.bookingDate); // must be in ISO format
+	}
+}
+
+function insertOrUpdate(req, res) {
+	var dto = req.body, method;
+	cleanObject(dto);
+	method = dto.id ? 'updateById' : 'insert';
+	repo[method](new CustomerOrder(dto)).then(
+		function() {
+			res.send({ status: "ok" });
+		},
+		function(violations) {
+			res.status(400).send({ violations: violations });
+		}
+	);
 }
 
 exports.list = function(req, res){
@@ -53,28 +70,6 @@ exports.get = function(req, res) {
 	});
 };
 
-exports.put = function(req, res) {
-	var dto = req.body;
-	cleanObject(dto);
-	if (dto.bookingDate) {
-		dto.bookingDate = new Date(dto.bookingDate); // must be in ISO format
-	}
+exports.put = insertOrUpdate;
 
-	repo.updateById(new CustomerOrder(dto)).then(
-		function() {
-			res.send({ status: "ok" });
-		},
-		function(violations) {
-			res.status(400).send({ violations: violations });
-		}
-	);
-};
-
-exports.post = function(req, res) {
-	if (!req.body.bookingDate) {
-		req.body.bookingDate = new Date();
-	}
-	repo.insert(req.body).then(function() {
-		res.send({ status: "ok" })
-	});
-}
+exports.post = insertOrUpdate;
