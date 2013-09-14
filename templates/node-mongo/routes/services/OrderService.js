@@ -22,18 +22,22 @@ function cleanObject(object) {
 	}
 }
 
-function insertOrUpdate(req, res) {
-	var dto = req.body, method;
-	cleanObject(dto);
-	method = dto.id ? 'updateById' : 'insert';
-	repo[method](new CustomerOrder(dto)).then(
-		function() {
-			res.send({ status: "ok" });
+function doResponse(deferred, res) {
+	deferred.then(
+		function(result) {
+			res.send(result ? result : { status: "ok" });
 		},
 		function(violations) {
 			res.status(400).send({ violations: violations });
 		}
 	);
+}
+
+function insertOrUpdate(req, res) {
+	var dto = req.body, method;
+	cleanObject(dto);
+	method = dto.id ? 'updateById' : 'insert';
+	doResponse(repo[method](new CustomerOrder(dto)), res);
 }
 
 exports.list = function(req, res){
@@ -65,9 +69,7 @@ exports.list = function(req, res){
 };
 
 exports.get = function(req, res) {
-	repo.findOne({ id: req.params.id }).then(function(order) {
-		res.send(order);
-	});
+	doResponse(repo.findOne({ id: req.params.id }), res);
 };
 
 exports.put = insertOrUpdate;
@@ -75,12 +77,5 @@ exports.put = insertOrUpdate;
 exports.post = insertOrUpdate;
 
 exports.delete = function(req, res) {
-	repo.remove(req.params.id).then(
-		function() {
-			res.send({ status: 'ok' });
-		},
-		function(violations) {
-			res.status(400).send({ violations: violations });
-		}
-	);
+	doResponse(repo.remove(req.params.id), res);
 }
