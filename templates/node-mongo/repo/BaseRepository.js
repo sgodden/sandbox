@@ -151,6 +151,25 @@ BaseRepository.prototype.updateById = function(object) {
 	});
 };
 
+/**
+ * Removes an object from the repository by its id.
+ * @param id {string} the id.
+ */
+BaseRepository.prototype.remove = function(id) {
+	var query = {
+			_id: new mongodb.ObjectID(id)
+		};
+	return this.execCollection(function (coll, d) {
+		coll.remove(query, function (err) {
+			if (err) {
+				throw new Error(err);
+			} else {
+				d.resolve();
+			}
+		});
+	});
+}
+
 exports.BaseRepository = BaseRepository;
 
 

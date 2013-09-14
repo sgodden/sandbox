@@ -6,7 +6,7 @@
 var express = require('express'),
 	routes = require('./routes'),
 	orders = require('./routes/orders'),
-	ordersService = require("./routes/services/orders"),
+	orderService = require("./routes/services/OrderService"),
 	http = require('http'),
 	path = require('path'),
 	UserRepository = require("./repo/UserRepository"),
@@ -141,10 +141,11 @@ app.get("/services/*", function (req, res, next) {
 	forbidIfNotLoggedIn(req, res, next);
 });
 
-app.get("/services/orders/", ordersService.list);
-app.get("/services/orders/:id", ordersService.get);
-app.put("/services/orders/:id", ordersService.put);
-app.post("/services/orders/", ordersService.post);
+app.get("/services/orders/", orderService.list);
+app.get("/services/orders/:id", orderService.get);
+app.put("/services/orders/:id", orderService.put);
+app.delete("/services/orders/:id", orderService.delete);
+app.post("/services/orders/", orderService.post);
 
 // let's create some users if there are none already
 userRepo.count().then(function (count) {

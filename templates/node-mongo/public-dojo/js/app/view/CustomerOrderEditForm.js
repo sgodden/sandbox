@@ -41,6 +41,10 @@ define([
 			})));
         },
 
+		_deleteButtonClicked: function() {
+			this.emit('delete', { model: this.model });
+		},
+
 		startup: function() {
 			this.inherited(arguments);
 			this.dapOrderNumber.focus();

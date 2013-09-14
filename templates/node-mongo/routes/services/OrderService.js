@@ -73,3 +73,14 @@ exports.get = function(req, res) {
 exports.put = insertOrUpdate;
 
 exports.post = insertOrUpdate;
+
+exports.delete = function(req, res) {
+	repo.remove(req.params.id).then(
+		function() {
+			res.send({ status: 'ok' });
+		},
+		function(violations) {
+			res.status(400).send({ violations: violations });
+		}
+	);
+}

@@ -43,23 +43,33 @@ define([
         _configureView: function(order) {
 			return new CustomerOrderEditForm({
 				model: order,
-				onsubmit: lang.hitch(this, "_submit")
+				onsubmit: lang.hitch(this, "_submit"),
+				ondelete: lang.hitch(this, "_delete")
 			});
         },
 
+		_delete: function(data) {
+			this._postback(data.model, 'remove');
+		},
+
         _submit: function(data) {
 			var model = data.model, method = model.id ? "put" : "add";
+			this._postback(model, method);
+        },
+
+		_postback: function(model, method) {
+			var data = method === 'remove' ? model.id : model;
 			model._csrf = dojo.cookie("_csrf");
-            // TODO - handling of server side errors
-            new CustomerOrdersModel()[method](model).then(
-                function(){
-                    router.go("/orders");
-                },
-                function(response) {
-                    console.log("ERROR: " + JSON.parse(response.response.data).exceptions[0].message);
-                }
-            );
-        }
+			// TODO - handling of server side errors
+			new CustomerOrdersModel()[method](data).then(
+				function(){
+					router.go("/orders");
+				},
+				function(response) {
+					console.log("ERROR: " + JSON.parse(response.response.data).exceptions[0].message);
+				}
+			);
+		}
     });
 
 });
