@@ -35,9 +35,11 @@ define([
             this.dapBookingDate.set("value", at(this.model, "bookingDate"));
 			this.own(on(this.dapForm, "submit", lang.hitch(this, function(evt) {
 				event.stop(evt);
-				// focus the button so that the mvc bindings are updated
-				this.dapSubmitButton.focus();
-				this.emit('submit', { model: this.model });
+				if (this.dapForm.validate()) {
+					// focus the button so that the mvc bindings are updated
+					this.dapSubmitButton.focus();
+					this.emit('submit', { model: this.model });
+				}
 			})));
         },
 
