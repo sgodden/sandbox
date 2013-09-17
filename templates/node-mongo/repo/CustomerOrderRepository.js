@@ -4,8 +4,9 @@ var
     CustomerOrderRepository, proto;
 
 /**
- * @module A repository module for Customer Orders.
- * @type {{CustomerOrderRepository}}
+ * A repository for customer orders.
+ * @constructor
+ * @extends BaseRepository
  */
 CustomerOrderRepository = function() {
 	var foo;
@@ -21,18 +22,24 @@ CustomerOrderRepository = function() {
 	Object.freeze(this);
 };
 
-
-proto = CustomerOrderRepository.prototype = new BaseRepository();
-proto.foo = null;
-proto.COLL_NAME = "customerOrders";
-proto.entityClass = CustomerOrder;
+CustomerOrderRepository.prototype = new BaseRepository();
 
 /**
- * An example of overriding a method.
- * @return {number}
+ * @const
+ * @type {string}
  */
-proto.count = function() {
-	console.log("LOOK AT ME MA - OVERRIDDEN");
+CustomerOrderRepository.prototype.COLL_NAME = "customerOrders";
+/**
+ * @const
+ * @type {*}
+ */
+CustomerOrderRepository.prototype.entityClass = CustomerOrder;
+
+/**
+ * Returns a count of customer orders.
+ * @returns {number}
+ */
+CustomerOrderRepository.prototype.count = function() {
     return BaseRepository.prototype.count.apply(this);
 };
 
