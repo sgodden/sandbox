@@ -28,8 +28,7 @@ function fixId(query) {
  * A base repository providing common repository methods.
  * @class
  */
-BaseRepository = function() {
-};
+BaseRepository = function() {};
 
 BaseRepository.prototype.execCollection = function (callback) {
 	var self = this,
@@ -169,6 +168,8 @@ BaseRepository.prototype.remove = function(id) {
 		});
 	});
 }
+
+Object.freeze(BaseRepository);
 
 exports.BaseRepository = BaseRepository;
 

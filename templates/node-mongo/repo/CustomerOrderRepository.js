@@ -9,16 +9,7 @@ var
  * @extends BaseRepository
  */
 CustomerOrderRepository = function() {
-	var foo;
-
-	Object.defineProperty(this, "foo", {
-		get: function() {
-			return foo;
-		},
-		set: function(value) {
-			foo = value;
-		}
-	});
+	BaseRepository.apply(this);
 	Object.freeze(this);
 };
 
@@ -34,14 +25,6 @@ CustomerOrderRepository.prototype.COLL_NAME = "customerOrders";
  * @type {*}
  */
 CustomerOrderRepository.prototype.entityClass = CustomerOrder;
-
-/**
- * Returns a count of customer orders.
- * @returns {number}
- */
-CustomerOrderRepository.prototype.count = function() {
-    return BaseRepository.prototype.count.apply(this);
-};
 
 Object.freeze(CustomerOrderRepository.prototype);
 
