@@ -43,6 +43,7 @@ CustomerOrderRepository.prototype.count = function() {
     return BaseRepository.prototype.count.apply(this);
 };
 
+Object.freeze(CustomerOrderRepository.prototype);
 
 exports.CustomerOrderRepository = CustomerOrderRepository;
 

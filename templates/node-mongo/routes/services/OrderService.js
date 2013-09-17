@@ -5,7 +5,8 @@ var CustomerOrderRepository = require('../../repo/CustomerOrderRepository').Cust
 	_ = require("underscore"),
 	djRequire = require("dojo-node"),
 	lang = djRequire("dojo/_base/lang"),
-    repo = new CustomerOrderRepository();
+    repo = new CustomerOrderRepository(),
+	OrderService;
 
 function cleanObject(object) {
 	var key, value;
@@ -40,7 +41,18 @@ function insertOrUpdate(req, res) {
 	doResponse(repo[method](new CustomerOrder(dto)), res);
 }
 
-exports.list = function(req, res){
+/**
+ * An order service.
+ * @constructor
+ */
+OrderService = function() {};
+
+/**
+ * Lists all orders.
+ * @param req request.
+ * @param res response.
+ */
+OrderService.prototype.list = function(req, res){
     var doList = function() {
         repo.findAll().then(function(docs){
             res.send(docs);
@@ -68,14 +80,42 @@ exports.list = function(req, res){
     });
 };
 
-exports.get = function(req, res) {
+/**
+ * Returns an order by its id.
+ * @param req request.
+ * @param res response.
+ */
+OrderService.prototype.get = function(req, res) {
 	doResponse(repo.findOne({ id: req.params.id }), res);
 };
 
-exports.put = insertOrUpdate;
+/**
+ * Updates an order.
+ * @param req request.
+ * @param res response.
+ */
+OrderService.prototype.put = function(req, res) {
+	insertOrUpdate(req, res);
+};
 
-exports.post = insertOrUpdate;
+/**
+ * Creates a new order.
+ * @param req request.
+ * @param res response.
+ */
+OrderService.prototype.post = function(req, res) {
+	insertOrUpdate(req, res);
+};
 
-exports.delete = function(req, res) {
+/**
+ * Deletes an order by its id.
+ * @param req request.
+ * @param res response.
+ */
+OrderService.prototype.delete = function(req, res) {
 	doResponse(repo.remove(req.params.id), res);
-}
+};
+
+Object.freeze(OrderService.prototype);
+
+exports.OrderService = OrderService;
