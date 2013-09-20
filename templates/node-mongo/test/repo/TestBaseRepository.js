@@ -1,31 +1,40 @@
 "use strict";
 
-var BaseRepo = require("../../repo/BaseRepository").CustomerOrder,
-	assert = require("assert");
+var mongodb = require('mongodb'),
+	sinon = require("sinon"),
+	BaseRepository,
+	assert = require("assert"),
+	TestRepository,
+	TestEntity,
+	MockServer;
 
-function getViolationCountForPath(violations, path) {
-	return violations.filter(function(violation) {
-		return violation.path === path;
-	}).length;
+MockServer = {
+	isConnected: function() {
+		return true;
+	}
 }
 
-describe("CustomerOrder", function() {
+sinon.stub(mongodb, 'Server').returns(MockServer);
 
-	describe("validate", function() {
-		var order;
+BaseRepository = require("../../repo/BaseRepository").BaseRepository;
 
-		before(function() {
-			order = new CustomerOrder();
-		});
+TestRepository = function() {
+	BaseRepository.apply(this);
+};
+TestRepository.prototype = new BaseRepository();
+TestRepository.prototype.COLL_NAME = "testCollection";
 
-		it("should require an order number", function() {
-			var violations = order.validate();
-			assert.equal(1, getViolationCountForPath(violations, "orderNumber"));
-		});
+TestEntity = function() {
+};
 
-		it("should require a customer reference", function() {
-			var violations = order.validate();
-			assert.equal(1, getViolationCountForPath(violations, "customerReference"));
+
+describe("BaseRepository", function() {
+
+	describe("validation", function() {
+
+		it("should call validate prior to insert", function() {
+			var entity = new TestEntity(), repo = new TestRepository();
+			repo.insert(entity);
 		});
 
 	});
