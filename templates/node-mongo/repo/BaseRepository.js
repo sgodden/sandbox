@@ -81,14 +81,24 @@ BaseRepository.prototype.findAll = function() {
  */
 BaseRepository.prototype.insert = function (docs) {
     return this.execCollection(function (coll, d) {
-		coll.insert(docs, {safe: true}, function (err, docs) {
-			if (err) {
-				throw new Error(err);
-			}
-			else {
-				d.resolve(docs);
+		var violations = [];
+		docs.forEach(function(object) {
+			if (object.validate) {
+				violations = object.validate();
 			}
 		});
+		if (violations.length) {
+			d.reject(violations);
+		} else {
+			coll.insert(docs, {safe: true}, function (err, docs) {
+				if (err) {
+					throw new Error(err);
+				}
+				else {
+					d.resolve(docs);
+				}
+			});
+		}
     });
 };
 
